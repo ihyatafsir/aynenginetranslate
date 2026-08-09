@@ -39,6 +39,10 @@ translation_engine_framework/
 │   └── epub_builder.py                # Reusable Kindle EPUB builder
 ├── data/
 │   ├── lisanclean.json                # Extracted Lisān al-ʿArab root corpus
+│   ├── grammars/
+│   │   └── sibawayh_kitab/           # Sībawayh's Al-Kitāb (الكتاب لسيبويه)
+│   │       ├── sibawayh_kitab.txt     # Complete 2.58 MB master text
+│   │       └── sibawayh_rules.json    # Parsed syntactic rule index
 │   └── lexicons/
 │       └── kitab_al_ayn/             # Al-Khalīl ibn Aḥmad al-Farāhīdī's Kitāb al-ʿAyn
 │           ├── kitab_al_ayn_dictionary.json
