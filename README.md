@@ -32,11 +32,20 @@ Unlike standard translation models that output footnotes after translation, this
 
 ```
 translation_engine_framework/
-├── README.md                          # This documentation
+├── README.md                          # Framework documentation
 ├── config.py                          # Environment & API configurations
 ├── core/
 │   ├── lexicographical_engine.py      # Reusable translation engine class
 │   └── epub_builder.py                # Reusable Kindle EPUB builder
+├── data/
+│   ├── lisanclean.json                # Extracted Lisān al-ʿArab root corpus
+│   └── lexicons/
+│       └── kitab_al_ayn/             # Al-Khalīl ibn Aḥmad al-Farāhīdī's Kitāb al-ʿAyn
+│           ├── kitab_al_ayn_dictionary.json
+│           ├── 01_djvu.txt
+│           ├── 02_djvu.txt
+│           ├── 03_djvu.txt
+│           └── 04_djvu.txt
 └── examples/
     ├── translate_asrar_tanzil_demo.py # Complete working manuscript example
     └── build_asrar_epub_demo.py       # Working EPUB builder example
