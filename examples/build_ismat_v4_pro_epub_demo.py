@@ -13,7 +13,7 @@ Features:
 - Auto-mirrors output to local EPUB directory and remote web server as ismat_anbiya_v4_pro_7roots_en.epub.
 """
 
-import json, os, sys, shutil, html
+import json, os, sys, shutil, html, re
 from pathlib import Path
 from ebooklib import epub
 
