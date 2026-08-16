@@ -51,6 +51,32 @@ p {
     text-align: justify;
 }
 
+
+.hadith-quote {
+    background-color: #f8fafc;
+    border-left: 4px solid #0284c7;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin: 1.2em 0;
+}
+
+.hadith-arabic {
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+    direction: rtl;
+    text-align: right;
+    font-size: 1.25em;
+    line-height: 1.9;
+    color: #0f172a;
+    margin-bottom: 0.4em;
+}
+
+.hadith-translation {
+    font-size: 1.0em;
+    line-height: 1.6;
+    color: #334155;
+    font-style: italic;
+}
+
 blockquote {
     margin: 1.2em 0;
     padding: 0.8em 1.2em;
