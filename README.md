@@ -76,3 +76,14 @@ engine.process_file("data/texts/sample_manuscript.txt", "data/output/translated.
 ---
 
 *Engine Framework Created: August 2026 for General Reusability across Classical Translation Projects.*
+
+---
+
+## 🌟 v4 Pro 7-Root Constellation Paradigm (*Al-Manẓūma al-Sabʿiyya*)
+
+* **7-Root Classical Matrix**: Extracts 7 governing lexical roots per chapter from *Lisān al-ʿArab* prior to translation generation.
+* **Sībawayh Syntactic Anchors**: Extracts 2 governing grammatical rules per chapter from *al-Kitāb* to resolve complex scholastic periods.
+* **Canonical Sectarian Standards**: Strict transliterations for classical theological schools (*al-Imāmiyya, al-Rawāfiḍ, al-Muʿtazila, al-Ḥashwiyya, al-Ashāʿira*).
+* **Kalām Precision**: Theological distinction for *al-Sahw* (inadvertence/oversight) vs. deliberate sin, with *jāʾiz* rendered as *rationally/humanly possible*.
+* **Canonical Arabic Prophet Names**: Harmonizes prophet names with traditional transliterations (*Ādam, Nūḥ, Ibrāhīm, Mūsā, ʿĪsā, Muḥammad*) and honorifics.
+* **Checkpoint Resume**: Built-in state recovery for multi-chapter batch processing.
