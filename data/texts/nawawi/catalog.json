@@ -1,0 +1,251 @@
+{
+  "author": "Imam Yahya ibn Sharaf al-Nawawi (الإمام النووي)",
+  "death_hijri": "676 AH",
+  "death_gregorian": "1277 CE",
+  "total_works": 22,
+  "total_words": 5959270,
+  "works": [
+    {
+      "slug": "al_arbaun_al_nawawiyya",
+      "title_ar": "الأربعون النووية",
+      "title_en": "The Forty Hadith",
+      "category": "Hadith",
+      "description": "The quintessential collection of foundational prophetic traditions encapsulating Islamic doctrine and practice.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_arbaun_al_nawawiyya.txt",
+      "char_count": 39660,
+      "word_count": 7343,
+      "file_size_bytes": 67799
+    },
+    {
+      "slug": "riyad_al_salihin",
+      "title_ar": "رياض الصالحين من كلام سيد المرسلين",
+      "title_en": "Gardens of the Righteous",
+      "category": "Hadith & Ethics",
+      "description": "The universally acclaimed compendium of moral, ethical, and devotional Hadith.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/riyad_al_salihin.txt",
+      "char_count": 719487,
+      "word_count": 144458,
+      "file_size_bytes": 1227518
+    },
+    {
+      "slug": "al_tibyan_fi_adab_hamalat_al_quran",
+      "title_ar": "التبيان في آداب حملة القرآن",
+      "title_en": "Etiquette with the Quran",
+      "category": "Quranic Sciences",
+      "description": "Classical manual on the decorum, ethics, and spiritual responsibilities of learners and reciters of the Quran.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_tibyan_fi_adab_hamalat_al_quran.txt",
+      "char_count": 128331,
+      "word_count": 25025,
+      "file_size_bytes": 227343
+    },
+    {
+      "slug": "kitab_al_adhkar",
+      "title_ar": "الأذكار المنتخبة من كلام سيد الأبرار",
+      "title_en": "The Book of Remembrances",
+      "category": "Devotion & Hadith",
+      "description": "Comprehensive encyclopedic collection of daily prayers, invocations, and supplications.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/kitab_al_adhkar.txt",
+      "char_count": 635639,
+      "word_count": 127356,
+      "file_size_bytes": 1102941
+    },
+    {
+      "slug": "minhaj_al_talibin",
+      "title_ar": "منهاج الطالبين وعمدة المفتين",
+      "title_en": "The Path of the Seekers",
+      "category": "Jurisprudence",
+      "description": "The premier authoritative foundational textbook of standard Shafi'i jurisprudence.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/minhaj_al_talibin.txt",
+      "char_count": 401381,
+      "word_count": 78172,
+      "file_size_bytes": 715468
+    },
+    {
+      "slug": "bustan_al_arifin",
+      "title_ar": "بستان العارفين",
+      "title_en": "Garden of the Gnostics",
+      "category": "Sufism & Spirituality",
+      "description": "Spiritual treatise on sincerity, asceticism, humility, and the moral wayfaring of gnostics.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/bustan_al_arifin.txt",
+      "char_count": 92352,
+      "word_count": 17634,
+      "file_size_bytes": 164684
+    },
+    {
+      "slug": "sharh_sahih_muslim",
+      "title_ar": "المنهاج شرح صحيح مسلم بن الحجاج",
+      "title_en": "The Commentary on Sahih Muslim",
+      "category": "Hadith Commentary",
+      "description": "The magnum opus monumental commentary on Imam Muslim's canonical Hadith collection.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/sharh_sahih_muslim.txt",
+      "char_count": 4028691,
+      "word_count": 764130,
+      "file_size_bytes": 7192629
+    },
+    {
+      "slug": "al_majmu_sharh_al_muhadhdhab",
+      "title_ar": "المجموع شرح المهذب",
+      "title_en": "The Vast Compendium in Comparative Jurisprudence",
+      "category": "Jurisprudence",
+      "description": "The monumental multi-volume encyclopedic work of detailed comparative legal analysis.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_majmu_sharh_al_muhadhdhab.txt",
+      "char_count": 15006978,
+      "word_count": 2902584,
+      "file_size_bytes": 26678979
+    },
+    {
+      "slug": "rawdat_al_talibin",
+      "title_ar": "روضة الطالبين وعمدة المفتين",
+      "title_en": "The Meadow of the Seekers",
+      "category": "Jurisprudence",
+      "description": "The exhaustive masterwork codifying the comprehensive corpus of Shafi'i legal opinions.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/rawdat_al_talibin.txt",
+      "char_count": 6080093,
+      "word_count": 1125406,
+      "file_size_bytes": 10805692
+    },
+    {
+      "slug": "tahdhib_al_asma_wa_al_lughat",
+      "title_ar": "تهذيب الأسماء واللغات",
+      "title_en": "Refinement of Names and Lexicon",
+      "category": "Biographical & Lexicography",
+      "description": "Biographical dictionary and linguistic encyclopedic glossary of classical legal terminology.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/tahdhib_al_asma_wa_al_lughat.txt",
+      "char_count": 2123650,
+      "word_count": 396041,
+      "file_size_bytes": 3713030
+    },
+    {
+      "slug": "al_taqrib_wa_al_taysir",
+      "title_ar": "التقريب والتيسير لمعرفة سنن البشير النذير",
+      "title_en": "The Facilitated Introduction to Hadith Sciences",
+      "category": "Hadith Methodology",
+      "description": "Standard primer on Hadith terminology, transmission criteria, and critical classification.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_taqrib_wa_al_taysir.txt",
+      "char_count": 97990,
+      "word_count": 18307,
+      "file_size_bytes": 174616
+    },
+    {
+      "slug": "al_idah_fi_manasik_al_hajj",
+      "title_ar": "الإيضاح في مناسك الحج والعمرة",
+      "title_en": "The Clarification of the Rites of Hajj",
+      "category": "Jurisprudence",
+      "description": "Essential classical handbook on the legal and devotional obligations of the Pilgrimage.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_idah_fi_manasik_al_hajj.txt",
+      "char_count": 237676,
+      "word_count": 46697,
+      "file_size_bytes": 415356
+    },
+    {
+      "slug": "adab_al_fatwa_wa_al_mufti",
+      "title_ar": "أدب الفتوى والمفتي والمستفتي",
+      "title_en": "The Decorum of Legal Rulings and the Juriconsult",
+      "category": "Legal Ethics",
+      "description": "Foundational treatise on the ethical principles, prerequisites, and protocols of issuing religious edicts.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/adab_al_fatwa_wa_al_mufti.txt",
+      "char_count": 43236,
+      "word_count": 8487,
+      "file_size_bytes": 77018
+    },
+    {
+      "slug": "daqaiq_al_minhaj",
+      "title_ar": "دقائق المنهاج",
+      "title_en": "Subtleties of the Minhaj",
+      "category": "Jurisprudence",
+      "description": "Authorial commentary clarifying the precise terminology and linguistic nuances of Minhaj al-Talibin.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/daqaiq_al_minhaj.txt",
+      "char_count": 36106,
+      "word_count": 6922,
+      "file_size_bytes": 64500
+    },
+    {
+      "slug": "khulasat_al_ahkam",
+      "title_ar": "خلاصة الأحكام في مهمات السنن وقواعد الإسلام",
+      "title_en": "The Epitome of Legal Judgments",
+      "category": "Hadith & Fiqh",
+      "description": "Comprehensive analysis of Hadith evidence underpinning legal rulings.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/khulasat_al_ahkam.txt",
+      "char_count": 641885,
+      "word_count": 135145,
+      "file_size_bytes": 1080732
+    },
+    {
+      "slug": "irshad_tullab_al_haqaiq",
+      "title_ar": "إرشاد طلاب الحقائق إلى معرفة سنن خير الخلائق",
+      "title_en": "Guiding the Seekers of Truth",
+      "category": "Hadith Methodology",
+      "description": "Abridgment and exposition of Ibn al-Salah's Muqaddimah on Hadith science.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/irshad_tullab_al_haqaiq.txt",
+      "char_count": 207711,
+      "word_count": 39695,
+      "file_size_bytes": 355730
+    },
+    {
+      "slug": "tahrir_alfaz_al_tanbih",
+      "title_ar": "تحرير ألفاظ التنبيه",
+      "title_en": "The Lexical Gloss on Al-Tanbih",
+      "category": "Legal Lexicography",
+      "description": "Lexicographical dissection of the legal vocabulary in Abu Ishaq al-Shirazi's Al-Tanbih.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/tahrir_alfaz_al_tanbih.txt",
+      "char_count": 231358,
+      "word_count": 43087,
+      "file_size_bytes": 414617
+    },
+    {
+      "slug": "al_masail_al_manthurah",
+      "title_ar": "الفتاوى أو المسائل المنثورة",
+      "title_en": "The Scattered Legal Edicts (Fatawa al-Nawawi)",
+      "category": "Fatwa & Jurisprudence",
+      "description": "Collected actual historical legal responsa arranged by his disciple Ibn al-Attar.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_masail_al_manthurah.txt",
+      "char_count": 153593,
+      "word_count": 30422,
+      "file_size_bytes": 265916
+    },
+    {
+      "slug": "al_ijaz_fi_sharh_sunan_abi_dawud",
+      "title_ar": "الإيجاز في شرح سنن أبي داود",
+      "title_en": "The Concise Commentary on Sunan Abi Dawud",
+      "category": "Hadith Commentary",
+      "description": "Scholarly commentary and textual critique on Imam Abu Dawud's Sunan.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_ijaz_fi_sharh_sunan_abi_dawud.txt",
+      "char_count": 114644,
+      "word_count": 24058,
+      "file_size_bytes": 193732
+    },
+    {
+      "slug": "risalah_fi_al_itiqad",
+      "title_ar": "رسالة في الاعتقاد وأهل السنة",
+      "title_en": "Treatise on the Creed of the Forebears",
+      "category": "Theology & Creed",
+      "description": "Doctrinal epistolary treatise outlining classical Sunni creed.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/risalah_fi_al_itiqad.txt",
+      "char_count": 62061,
+      "word_count": 11611,
+      "file_size_bytes": 109237
+    },
+    {
+      "slug": "al_usul_wa_al_dawabit",
+      "title_ar": "الأصول والضوابط",
+      "title_en": "The Legal Principles and Maxims",
+      "category": "Legal Maxims (Qawa'id)",
+      "description": "Precise extraction of legal canons, maxims, and operational hermeneutic rules.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/al_usul_wa_al_dawabit.txt",
+      "char_count": 8972,
+      "word_count": 1711,
+      "file_size_bytes": 15823
+    },
+    {
+      "slug": "takhmis_al_ghanima",
+      "title_ar": "تخميس الغنيمة",
+      "title_en": "Treatise on the Quintipartition of Spoils",
+      "category": "Jurisprudence",
+      "description": "Monograph examining the classical jurisprudential distribution of war spoils.",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/nawawi/takhmis_al_ghanima.txt",
+      "char_count": 26298,
+      "word_count": 4979,
+      "file_size_bytes": 46368
+    }
+  ]
+}

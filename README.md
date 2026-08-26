@@ -1,6 +1,6 @@
-# 🌌 AynEngine AI (v3.0.0): Sovereign Quad-Lexical Classical Translation & Dual-Edition Publishing Framework
+# 🌌 AynEngine AI (v3.2.0): Sovereign Quad-Lexical Classical Translation & Dual-Edition Publishing Framework
 
-A state-of-the-art, high-fidelity scholarly translation pipeline and multi-volume publishing engine designed for classical Arabic philosophical, theological (Kalām), and scientific literature.
+A state-of-the-art, high-fidelity scholarly translation pipeline and multi-volume publishing engine designed for classical Arabic philosophical, theological (Kalām), legal (Fiqh/Uṣūl), and Hadith literature.
 
 ---
 
@@ -17,14 +17,13 @@ AynEngine AI grounds classical Arabic translation into four foundational classic
 4. **Al-Khalīl ibn Aḥmad al-Farāhīdī (الخليل بن أحمد الفراهيدي - d. 175 AH)**: *Kitāb al-ʿAyn* (كتاب العين)
    - The first dictionary in the Arabic language; combinatorial phonetic permutation engine.
 5. **Sībawayh (سيبويه - d. 180 AH)**: *Al-Kitāb* (الكتاب لسيبويه)
-   - 2.58 MB master grammatical corpus with parsed syntactic rule index.
+   - Master grammatical corpus with parsed syntactic rule index.
 
 ---
 
-## 📚 Complete Imam al-Ghazali Corpus (26 Masterworks)
+## 📚 Complete Classical Ingested Corpora (48 Masterworks)
 
-AynEngine AI contains automated scrapers and ingestion pipelines for the complete digitized library of **Imam Abū Ḥāmid al-Ghazālī (d. 505 AH)** under `data/texts/ghazali/`:
-
+### 1. Imam Abū Ḥāmid al-Ghazālī (d. 505 AH) — 26 Masterworks
 * *Iḥyāʾ ʿUlūm al-Dīn* (4 Volumes, 4.3M chars)
 * *Al-Munqidh min al-Ḍalāl* (Deliverance from Error)
 * *Tahāfut al-Falāsifah* (The Incoherence of the Philosophers)
@@ -36,65 +35,48 @@ AynEngine AI contains automated scrapers and ingestion pipelines for the complet
 * *Al-Maqṣad al-Asnā* & *Jawāhir al-Qurʾān*
 * *Miʿyār al-ʿIlm*, *Miḥakk al-Naẓar*, *Maʿārij al-Quds*, *Faḍāʾiḥ al-Bāṭiniyya*, *Al-Mankhūl*, *Shifāʾ al-Ghalīl*, and all collected epistles.
 
+### 2. Imam Abū Zakariyyā Yaḥyā ibn Sharaf al-Nawawī (d. 676 AH) — 22 Masterworks
+* *Al-Arbaʿūn al-Nawawiyyah* (The 40 Hadith)
+* *Riyāḍ al-Ṣāliḥīn* (Gardens of the Righteous)
+* *Al-Tibyān fī Ādāb Ḥamalat al-Qurʾān* (Etiquette with the Quran)
+* *Kitāb al-Adhkār* (The Book of Remembrances)
+* *Minhāj al-Ṭālibīn* (The Path of the Seekers)
+* *Sharḥ Ṣaḥīḥ Muslim* (The Commentary on Sahih Muslim)
+* *Al-Majmūʿ Sharḥ al-Muhadhdhab* (Comparative Jurisprudence)
+* *Rawḍat al-Ṭālibīn* (The Meadow of the Seekers)
+* *Bustān al-ʿĀrifīn* (Garden of the Gnostics)
+* *Tahdhīb al-Asmāʾ wa-l-Lughāt*, *Al-Taqrīb wa-l-Taysīr*, *Al-Īḍāḥ fī Manāsik al-Ḥajj*, *Ādāb al-Fatwā*, *Daqāʾiq al-Minhāj*, *Khulāṣat al-Aḥkām*, *Irshād Ṭullāb al-Ḥaqāʾiq*, *Taḥrīr Alfāẓ al-Tanbīh*, and *Fatāwā al-Nawawī*.
+
 ---
 
 ## 📖 Dual-Edition Publishing Architecture
 
 For every classical work, AynEngine AI compiles **Two Distinct Publishing Editions**:
 
-### 1. Edition 1: Pure English Scholarly Edition (`_pure_en.epub`)
-- **Reading Experience**: Uninterrupted, elegant Kindle-ready English reading.
-- **Authorial Voice**: 100% Verbatim 1st-person authorial translation ("I say...", "Know that...").
-- **Zero AI Commentary**: Zero unsolicited modern disclaimers or commentary.
-- **Scriptural Preservation**: `{«...»}` verbatim Arabic retention for Quranic verses and Hadith.
+1. **Edition 1: Pure English Scholarly Edition (`_pure_en.epub`)**:
+   - 100% Verbatim 1st-person authorial translation (*"I say...", "Know that..."*).
+   - Zero AI commentary.
+   - Scriptural preservation: `{«...»}` verbatim Arabic retention for Quran and Hadith.
 
-### 2. Edition 2: Bilingual Scholarly Apparatus Edition (`_bilingual_lexical_en.epub`)
-- **Comparative Layout**: Complete Classical Arabic text with Amiri RTL typography.
-- **Quad-Lexical Apparatus**: Structured box detailing Al-Rāghib Kalām definitions, Al-Zamakhsharī Ḥaqīqah/Majāz distinctions, Lisān roots, and Sībawayh syntax rules.
-- **English Translation**: Complete scholarly translation following each Arabic section.
+2. **Edition 2: Bilingual Scholarly Apparatus Edition (`_bilingual_lexical_en.epub`)**:
+   - Complete Classical Arabic source text with Amiri RTL typography.
+   - **Quad-Lexical Apparatus Box**: Extracted root definitions from Al-Rāghib (Kalām), Al-Zamakhsharī (Ḥaqīqah vs. Majāz), Lisān al-ʿArab, and Sībawayh syntax.
+   - English scholarly translation following each Arabic section.
 
 ---
 
-## 🚀 Running the Ghazali Dual-Edition Pipeline
+## 🚀 Running the Dual-Edition Pipeline
 
 ```bash
-# 1. Scrape & Ingest All 26 Ghazali Masterworks
+# 1. Scrape & Ingest Complete Corpora
 python3 scripts/scrape_all_ghazali_corpus.py
+python3 scripts/scrape_all_nawawi_corpus.py
 
-# 2. Run Dual-Edition Pipeline on Specific Book (e.g. Al-Munqidh min al-Dalal)
-python3 scripts/run_ghazali_dual_edition_pipeline.py --slug al_munqidh_min_al_dalal
+# 2. Run Unified Dual-Edition Pipeline
+python3 scripts/run_classical_library_dual_edition_pipeline.py --author ghazali
+python3 scripts/run_classical_library_dual_edition_pipeline.py --author nawawi
+python3 scripts/run_classical_library_dual_edition_pipeline.py --author all
 
-# 3. Run Pipeline on Entire Ghazali Corpus
-python3 scripts/run_ghazali_dual_edition_pipeline.py --all
-```
-
----
-
-## 📁 Directory Structure
-
-```
-translation_engine_framework/
-├── README.md                                          # Framework documentation & specifications
-├── config.py                                          # Configuration & OpenITI corpus registry
-├── core/
-│   ├── lexicographical_engine.py                      # Reusable Quad-Lexical Translation Engine class
-│   └── epub_builder.py                                # Reusable Kindle & EPUB3 Dual-Edition builder
-├── data/
-│   ├── texts/ghazali/                                # 26 Ingested & Cleaned Ghazali Arabic texts + catalog.json
-│   ├── translations/ghazali/                         # Checkpoint JSON archives
-│   ├── epubs/ghazali/                                # Output Pure & Bilingual EPUB3 editions
-│   ├── lisanclean.json                                # Lisān al-ʿArab root corpus
-│   ├── grammars/sibawayh_kitab/                      # Sībawayh's Al-Kitāb & rule index
-│   └── lexicons/
-│       ├── kitab_al_ayn/                             # Kitāb al-ʿAyn database
-│       ├── raghib_mufradat/                          # Al-Mufradāt raw text & JSON dictionary (1,623 roots)
-│       └── zamakhshari_asas/                         # Asās al-Balāghah raw text & JSON dictionary (3,721 roots)
-├── scripts/
-│   ├── build_classical_lexicons.py                   # Lexicon scraper & indexing pipeline
-│   ├── scrape_all_ghazali_corpus.py                  # Ghazali 26-book corpus scraper
-│   └── run_ghazali_dual_edition_pipeline.py          # Automated Ghazali dual-edition batch pipeline
-└── examples/
-    ├── translate_ghazali_dual_edition_demo.py         # Ghazali dual-edition demonstration
-    ├── translate_quad_lexicon_demo.py                 # Quad-Lexicon Kalām translation demo
-    └── build_matalib_omnibus_epub_demo.py             # Multi-volume omnibus compiler
+# 3. Sync to Google Drive
+rclone copy data/epubs/ gdrive:aynengine_ai_classical_library/
 ```
