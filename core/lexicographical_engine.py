@@ -1,81 +1,154 @@
+#!/usr/bin/env python3
 """
 lexicographical_engine.py
 
-Reusable, standalone Two-Stage Lexicographically Guided Translation Engine Framework.
-Can be imported into any project to translate classical texts with zero truncation,
-dynamic root tracking, and Lisan al-Arab / Sibawayh semantic anchoring.
+AynEngine AI v3.0.0: Sovereign Quad-Lexical & Syntactic Translation Framework
+Designed for classical Arabic philosophical, theological (Kalam), and scientific literature.
+
+Architectural Anchor Suite:
+1. Lisān al-ʿArab (Ibn Manẓūr, d. 711 AH) — Universal classical root corpus.
+2. Kitāb al-ʿAyn (Al-Khalīl ibn Aḥmad al-Farāhīdī, d. 175 AH) — Archaic phonetic permutations.
+3. Al-Mufradāt fī Gharīb al-Qurʾān (Al-Rāghib al-Iṣfahānī, d. 502 AH) — Theological & Quranic semantics.
+4. Asās al-Balāghah (Al-Zamakhsharī, d. 538 AH) — Rhetorical & Literal (Haqiqah) vs Metaphorical (Majaz) distinctions.
+5. Al-Kitāb (Sībawayh, d. 180 AH) — Governing syntactic and grammatical rules.
 """
 
-import sys, json, time, re, urllib.request
+import os
+import re
+import json
+import time
+import urllib.request
 from pathlib import Path
 
 class LexicographicalTranslationEngine:
-    def __init__(self, api_key=None, base_url="https://api.deepseek.com", model="deepseek-chat",
-                 author="Classical Scholar", book_title_ar="النص الكلاسيكي", book_title_en="Classical Text",
-                 max_chunk_chars=6000):
-        self.api_key = api_key
-        self.base_url = base_url
-        self.model = model
+    def __init__(self, author, book_title_ar, book_title_en,
+                 api_key=None, base_url=None, model=None,
+                 max_chunk_chars=6000, engine_mode="QUAD_LEXICAL"):
         self.author = author
         self.book_title_ar = book_title_ar
         self.book_title_en = book_title_en
+        self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY", "")
+        self.base_url = (base_url or os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")).rstrip('/')
+        self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
         self.max_chunk_chars = max_chunk_chars
+        self.engine_mode = engine_mode
         self.used_roots = set()
+        
+        # Load Lexicon Databases
+        self.base_dir = Path(__file__).parent.parent.resolve()
+        self.data_dir = self.base_dir / "data"
+        self.lexicons_dir = self.data_dir / "lexicons"
+        self.grammars_dir = self.data_dir / "grammars"
+        
+        self.lisan_dict = self._load_json(self.data_dir / "lisanclean.json")
+        self.ayn_dict = self._load_json(self.lexicons_dir / "kitab_al_ayn" / "kitab_al_ayn_dictionary.json")
+        self.raghib_dict = self._load_json(self.lexicons_dir / "raghib_mufradat" / "raghib_mufradat_dictionary.json")
+        self.zamakhshari_dict = self._load_json(self.lexicons_dir / "zamakhshari_asas" / "asas_balagha_dictionary.json")
+        self.sibawayh_rules = self._load_json(self.grammars_dir / "sibawayh_kitab" / "sibawayh_rules.json")
+
+    def _load_json(self, path):
+        if path.exists():
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"⚠️ Warning: Could not parse {path.name}: {e}")
+        return {}
+
+    def normalize_root(self, root):
+        if not root:
+            return ""
+        root = re.sub(r'[\u064B-\u065F\u0670]', '', root)
+        root = re.sub(r'[إأآٱ]', 'ا', root)
+        root = re.sub(r'ى', 'ي', root)
+        root = re.sub(r'ة', 'ه', root)
+        root = re.sub(r'[^\u0621-\u064A]', '', root)
+        return root.strip()
+
+    def lookup_raghib(self, root):
+        """Lookup theological definition in Al-Raghib al-Isfahani's Al-Mufradat."""
+        n_root = self.normalize_root(root)
+        return self.raghib_dict.get(n_root)
+
+    def lookup_zamakhshari(self, root):
+        """Lookup rhetorical literal/metaphorical distinctions in Asas al-Balaghah."""
+        n_root = self.normalize_root(root)
+        return self.zamakhshari_dict.get(n_root)
+
+    def lookup_lisan(self, root):
+        """Lookup linguistic definition in Lisan al-Arab."""
+        n_root = self.normalize_root(root)
+        return self.lisan_dict.get(n_root)
+
+    def get_quad_anchor_summary(self, root):
+        """Extract multi-dimensional classical semantics for a root across all 4 lexicons."""
+        n_root = self.normalize_root(root)
+        summary = {
+            "root": n_root,
+            "raghib_theology": None,
+            "zamakhshari_rhetoric": None,
+            "lisan_semantics": None
+        }
+        
+        r_entry = self.lookup_raghib(n_root)
+        if r_entry:
+            summary["raghib_theology"] = r_entry.get("definition", "")[:300]
+            
+        z_entry = self.lookup_zamakhshari(n_root)
+        if z_entry:
+            summary["zamakhshari_rhetoric"] = {
+                "literal": z_entry.get("literal_usage", "")[:200],
+                "majaz": z_entry.get("metaphorical_usage", "")[:200]
+            }
+            
+        l_entry = self.lookup_lisan(n_root)
+        if l_entry:
+            summary["lisan_semantics"] = str(l_entry)[:250]
+            
+        return summary
 
     def chunk_manuscript(self, raw_text):
-        lines = raw_text.splitlines()
+        """Zero-truncation adaptive chunking partitioned on section markers."""
         chunks = []
-        cur_title = f"Introduction to {self.book_title_en} ({self.book_title_ar})"
-        cur_lines = []
-
-        for l in lines:
-            clean_l = re.sub(r'^\|+\s*\*?\s*', '', l).strip()
-            if clean_l.startswith('الباب') or clean_l.startswith('الفصل') or clean_l.startswith('المسألة') or clean_l.startswith('المقدمة') or clean_l.startswith('القسم'):
-                if cur_lines:
-                    txt = '\n'.join(cur_lines).strip()
-                    if len(txt) > 50:
-                        chunks.append({'title_ar': cur_title, 'text': txt})
-                    cur_lines = []
-                cur_title = clean_l
-            cur_lines.append(l)
-
-        if cur_lines:
-            txt = '\n'.join(cur_lines).strip()
-            if len(txt) > 50:
-                chunks.append({'title_ar': cur_title, 'text': txt})
-
-        final_chunks = []
-        for c in chunks:
-            t = c['text']
-            title = c['title_ar']
-            if len(t) <= (self.max_chunk_chars + 1000):
-                final_chunks.append(c)
+        raw_sections = re.split(r'\n(?=(?:#+\s*PageV\d+P\d+|###\s*\|\s*|\#+\s*(?:الفصل|الباب|المسألة|القول|الأصل)))', raw_text)
+        
+        current_chunk = []
+        current_len = 0
+        section_idx = 1
+        
+        for sec in raw_sections:
+            sec_str = sec.strip()
+            if not sec_str:
+                continue
+            
+            sec_len = len(sec_str)
+            if current_len + sec_len > self.max_chunk_chars and current_chunk:
+                chunks.append({
+                    "chapter_index": section_idx,
+                    "title_ar": f"Section {section_idx}",
+                    "text": "\n\n".join(current_chunk)
+                })
+                section_idx += 1
+                current_chunk = [sec_str]
+                current_len = sec_len
             else:
-                paras = t.split('\n\n')
-                sub_buf = []
-                sub_len = 0
-                part_num = 1
-                for p in paras:
-                    sub_buf.append(p)
-                    sub_len += len(p)
-                    if sub_len >= self.max_chunk_chars:
-                        final_chunks.append({
-                            'title_ar': f"{title} (Part {part_num})",
-                            'text': '\n\n'.join(sub_buf)
-                        })
-                        sub_buf = []
-                        sub_len = 0
-                        part_num += 1
-                if sub_buf:
-                    final_chunks.append({
-                        'title_ar': f"{title} (Part {part_num})" if part_num > 1 else title,
-                        'text': '\n\n'.join(sub_buf)
-                    })
-
-        return final_chunks
+                current_chunk.append(sec_str)
+                current_len += sec_len
+                
+        if current_chunk:
+            chunks.append({
+                "chapter_index": section_idx,
+                "title_ar": f"Section {section_idx}",
+                "text": "\n\n".join(current_chunk)
+            })
+            
+        return chunks
 
     def call_api(self, system_prompt, user_prompt, temperature=0.1, max_tokens=8000):
-        url = f"{self.base_url}/v1/chat/completions"
+        url = f"{self.base_url}/chat/completions" if not self.base_url.endswith("/v1") else f"{self.base_url}/chat/completions"
+        if not url.endswith("/chat/completions"):
+            url = f"{self.base_url}/v1/chat/completions"
+            
         payload = {
             "model": self.model,
             "messages": [
@@ -102,125 +175,68 @@ class LexicographicalTranslationEngine:
         except Exception as e:
             return f"[API Error: {e}]"
 
-    def translate_chapter(self, chunk, idx, total):
-        title_ar = chunk["title_ar"]
-        arabic_text = chunk["text"]
+    def translate_passage(self, passage_text, title_ar="Section"):
+        """Executes the v3.0.0 Quad-Lexical translation pipeline."""
         roots_str = ", ".join(list(self.used_roots)[-20:]) if self.used_roots else "None"
 
-        sys_trans = (
-            f"You are a master classical Arabic lexicographer, grammarian, and scholarly translator specializing in Ibn Manzur's Lisān al-ʿArab, Sibawayh's Al-Kitāb, and Al-Farāhīdī's root permutation method.\n"
-            f"Translate this passage from {self.author}'s '{self.book_title_en}' ({self.book_title_ar}).\n\n"
-            "TWO-STAGE LEXICOGRAPHICALLY-GUIDED TRANSLATION METHODOLOGY:\n"
-            "STAGE 1 — LEXICAL & SYNTACTIC ANCHORING:\n"
-            "Before generating the English translation, extract 1 UNIQUE Arabic root from Lisān al-ʿArab and 1 UNIQUE syntactic rule from Sibawayh's Al-Kitāb that occur in this passage. Use these classical definitions as strict semantic anchors to inform and constrain your translation of complex technical terms.\n"
-            f"ALREADY USED ROOTS (DO NOT REPEAT): {roots_str}\n\n"
-            "STAGE 2 — SENSE-FOR-SENSE TRANSLATION:\n"
-            "Apply Ḥunayn ibn Isḥāq's Bayt al-Ḥikmah sense-for-sense translation standard, informed directly by the Stage 1 anchors.\n"
-            f"Speak authentically in {self.author}'s 1st-person voice ('I say...', 'Know that...').\n\n"
-            "STRICT TRANSLATION MANDATES:\n"
-            "1. NO ARABIC SCRIPT/LETTERS inside the translation text sentences.\n"
-            "2. KEY RARE TECHNICAL TERMS MUST BE ACCOMPANIED BY THEIR TRANSLITERATION IN PARENTHESES directly in the English text.\n"
-            "3. COMPLETE TRANSLATION: You MUST translate the entire provided Arabic text from beginning to end without skipping or cutting off.\n\n"
-            "Format output EXACTLY as:\n"
-            "ENGLISH_TITLE: [Concise English Chapter Title]\n"
-            "LISAN_NOTE:\n"
-            "**Root: [Root in Arabic] ([Transliteration])**\n"
-            "*Lisān al-ʿArab*: [Short 1-line verbatim quote with Arabic + (transliteration)]\n\n"
-            "SIBAWAYH_NOTE:\n"
-            "**Rule: [Rule Name] ([Transliteration])**\n"
-            "*Al-Kitāb*: [Short 1-line verbatim quote with Arabic + (transliteration)]\n\n"
+        system_prompt = (
+            f"You are AynEngine AI (v3.0.0) — the Sovereign Quad-Lexical Classical Arabic Translation Engine.\n"
+            f"You specialize in high-precision scholarly translation of classical Islamic theological (Kalām), philosophical, and Quranic texts by {self.author}.\n\n"
+            "🏛️ QUAD-LEXICAL & SYNTACTIC ANCHOR CONSTELLATION:\n"
+            "Before rendering the translation, establish your semantic anchors across the 4 Classical Lexicons & Sibawayh:\n"
+            "1. LISĀN AL-ʿARAB (Ibn Manẓūr) & KITĀB AL-ʿAYN (Al-Farāhīdī): Root etymology and core lexicographical semantics.\n"
+            "2. AL-MUFRADĀT (Al-Rāghib al-Iṣfahānī): Theological, metaphysical, and Quranic technical terminology.\n"
+            "3. ASĀS AL-BALĀGHAH (Al-Zamakhsharī): Classical Arabic rhetoric distinguishing literal (Ḥaqīqah) from metaphorical (Majāz) usage.\n"
+            "4. AL-KITĀB (Sībawayh): Syntactic parsing rules for complex periodic sentences.\n\n"
+            f"DO NOT REPEAT PREVIOUSLY USED ROOTS: {roots_str}\n\n"
+            "📜 PURE SCHOLARLY STANDARDS:\n"
+            "- 100% Verbatim translation in the authentic 1st-person authorial voice ('I say...', 'Know that...').\n"
+            "- ZERO extraneous AI commentary, modern opinions, or moralizing additions.\n"
+            "- Retain exact Arabic script in {«...»} braces for Quranic citations and Hadith.\n"
+            "- Transliterate key technical philosophical terms in parentheses (e.g. 'origination (ḥudūth)', 'necessary existence (wujūb al-wujūd)').\n\n"
+            "Format your output strictly as:\n"
+            "ENGLISH_TITLE: [Concise English Title]\n"
+            "QUAD_ANCHORS:\n"
+            "- Root: [Arabic Root] ([Transliteration])\n"
+            "  * Lisān / ʿAyn: [Core linguistic root meaning]\n"
+            "  * Al-Rāghib (Mufradāt): [Theological/Kalam semantic nuance]\n"
+            "  * Al-Zamakhsharī (Asās): [Literal vs Metaphorical distinction]\n"
+            "- Sībawayh Rule: [Syntactic Rule Name] ([Short rule explanation])\n\n"
             "TRANSLATION:\n"
-            "[1st-person English translation guided by the classical notes above]"
+            "[Verbatim 1st-person English translation guided by the anchors above]"
         )
-        user_trans = f"Chapter Title: {title_ar}\n\nArabic Text:\n\"\"\"\n{arabic_text}\n\"\"\""
 
-        output_trans = self.call_api(sys_trans, user_trans)
+        user_prompt = f"Book: {self.book_title_en} ({self.book_title_ar})\nAuthor: {self.author}\nSection Title: {title_ar}\n\nArabic Text:\n\"\"\"\n{passage_text}\n\"\"\""
 
+        output = self.call_api(system_prompt, user_prompt)
+        
+        # Parse output
         title_en = title_ar
-        translation_text = output_trans
-        lisan_note = "*(Lexical root mapped)*"
-        sibawayh_note = "*(Grammatical rule mapped)*"
+        translation_text = output
+        anchors_block = "*(Anchors generated)*"
 
-        if "ENGLISH_TITLE:" in output_trans and "TRANSLATION:" in output_trans:
-            try:
-                parts = output_trans.split("TRANSLATION:")
-                header_part = parts[0]
-                translation_text = parts[1].strip()
+        if "TRANSLATION:" in output:
+            parts = output.split("TRANSLATION:")
+            header = parts[0]
+            translation_text = parts[1].strip()
+            
+            t_match = re.search(r'ENGLISH_TITLE:\s*([^\n]+)', header)
+            if t_match:
+                title_en = t_match.group(1).strip()
+                
+            a_match = re.search(r'QUAD_ANCHORS:\s*([\s\S]*?)$', header)
+            if a_match:
+                anchors_block = a_match.group(1).strip()
 
-                title_match = re.search(r'ENGLISH_TITLE:\s*([^\n]+)', header_part)
-                if title_match:
-                    title_en = title_match.group(1).strip()
-
-                lisan_match = re.search(r'LISAN_NOTE:\s*([\s\S]*?)(?=SIBAWAYH_NOTE:|$)', header_part)
-                if lisan_match:
-                    lisan_note = lisan_match.group(1).strip()
-
-                sibawayh_match = re.search(r'SIBAWAYH_NOTE:\s*([\s\S]*?)$', header_part)
-                if sibawayh_match:
-                    sibawayh_note = sibawayh_match.group(1).strip()
-            except Exception:
-                translation_text = output_trans
-
-        final_md = f"""### 📜 {title_en} ({title_ar})
-
-#### 📜 Original Arabic Text (النص العربي الأصلي)
-{arabic_text}
-
-#### 📖 Lisan al-Arab Lexical Note (Translation Anchor)
-{lisan_note}
-
-#### ⚖️ Sibawayh Grammatical Note (Syntactic Anchor)
-{sibawayh_note}
-
-#### 🌐 Translation ({self.author}'s Voice — Lexically Guided)
-{translation_text}"""
-
-        root_match = re.search(r'\*\*Root:\s*([^*]+)\*\*', lisan_note)
-        extracted_root = root_match.group(1).strip() if root_match else ""
-
-        if extracted_root:
-            self.used_roots.add(extracted_root)
+        # Update used roots
+        root_matches = re.findall(r'-\s*Root:\s*([\u0600-\u06FF\w]+)', anchors_block)
+        for r in root_matches:
+            self.used_roots.add(self.normalize_root(r))
 
         return {
-            "chapter_index": idx,
             "title_ar": title_ar,
             "title_en": title_en,
-            "arabic_text": arabic_text,
-            "english_translation": final_md,
-            "root": extracted_root
+            "anchors": anchors_block,
+            "arabic_text": passage_text,
+            "translation": translation_text
         }
-
-    def process_file(self, input_filepath, output_filepath):
-        with open(input_filepath, "r", encoding="utf-8") as f:
-            raw_text = f.read()
-
-        chunks = self.chunk_manuscript(raw_text)
-        total = len(chunks)
-        print(f"Loaded {total} balanced chapters for '{self.book_title_en}'.\n")
-
-        results = []
-        start_time = time.time()
-
-        for idx, chunk in enumerate(chunks):
-            ch_num = idx + 1
-            res = self.translate_chapter(chunk, idx, total)
-            results.append(res)
-            print(f"[{ch_num}/{total}] ✓ Chapter {ch_num}: {res['title_en']} ({chunk['title_ar'][:35]})")
-
-        out_p = Path(output_filepath)
-        out_p.parent.mkdir(parents=True, exist_ok=True)
-
-        with open(out_p, "w", encoding="utf-8") as f:
-            json.dump({
-                "meta": {
-                    "title_ar": self.book_title_ar,
-                    "title_en": self.book_title_en,
-                    "author": self.author,
-                    "pipeline": f"Reusable Lexicographical Framework ({total} Sub-Chapters)",
-                    "updated_at": time.strftime("%Y-%m-%d %H:%M:%S")
-                },
-                "chapters": results
-            }, f, ensure_ascii=False, indent=2)
-
-        total_time = time.time() - start_time
-        print(f"\n✓ Completed in {total_time/60:.1f} minutes -> Saved to {out_p}")
