@@ -29,7 +29,7 @@ class LexicographicalTranslationEngine:
         self.book_title_en = book_title_en
         self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY", "")
         self.base_url = (base_url or os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")).rstrip('/')
-        self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-v4-pro")
+        self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
         self.max_chunk_chars = max_chunk_chars
         self.engine_mode = engine_mode
         self.used_roots = set()

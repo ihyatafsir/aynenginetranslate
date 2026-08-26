@@ -23,9 +23,16 @@ ZAMAKHSHARI_ASAS_PATH = LEXICONS_DIR / "zamakhshari_asas" / "asas_balagha_dictio
 SIBAWAYH_RULES_PATH = GRAMMARS_DIR / "sibawayh_kitab" / "sibawayh_rules.json"
 
 # LLM & DeepSeek Configuration
+env_file = BASE_DIR / ".env"
+if env_file.exists():
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        if line.strip() and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip())
+
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
-DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-v4-pro")
+DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
 
 BASE_OPENITI = "https://raw.githubusercontent.com/OpenITI"
 
