@@ -1,0 +1,19 @@
+{
+  "author": "Imam Fakhr al-Din al-Razi (الإمام فخر الدين الرازي)",
+  "works": [
+    {
+      "slug": "itiqadat_firaq_al_muslimin",
+      "title_ar": "اعتقادات فرق المسلمين والمشركين",
+      "title_en": "The Doctrines of Islamic Sects and Polytheists (I'tiqadat Firaq al-Muslimin wa'l-Mushrikin)",
+      "file_name": "itiqadat_firaq_al_muslimin.txt",
+      "description": "Imam Fakhr al-Din al-Razi's authoritative comparative survey of Islamic theological schools (Mu'tazila, Ash'ari, Shi'a, Khawarij, Murji'a, Karramiyya, Jahmiyya, Sufis) and world religions (Philosophers, Dualists, Polytheists, Astrologers)."
+    },
+    {
+      "slug": "al_qada_wal_qadar",
+      "title_ar": "كتاب الجبر والقدر (القضاء والقدر)",
+      "title_en": "The Book of Divine Decree and Predestination (Al-Qada' wa'l-Qadar / Al-Jabr wa'l-Qadar)",
+      "file_name": "al_qada_wal_qadar.txt",
+      "description": "Imam Fakhr al-Din al-Razi's monumental, rigorous philosophical and theological masterpiece resolving human free choice, divine power, causation, and predestination across 119 exhaustive investigations."
+    }
+  ]
+}

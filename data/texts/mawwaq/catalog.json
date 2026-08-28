@@ -1,0 +1,15 @@
+{
+  "author": "Sidi Muhammad ibn Yusuf al-Mawwaq al-'Abdari (d. 897 AH)",
+  "author_ar": "محمد بن يوسف بن أبي القاسم العبدري المواق الغرناطي",
+  "author_slug": "mawwaq",
+  "works": [
+    {
+      "slug": "sunan_al_muhtadin",
+      "title_ar": "سنن المهتدين في مقامات الدين",
+      "title_en": "Sunan al-Muhtadin fi Maqamat al-Din (The Conduct of the Rightly Guided in the Stations of Religion)",
+      "file": "sunan_al_muhtadin.txt",
+      "category": "Sufism & Maliki Jurisprudence (Tasawwuf & Fiqh)",
+      "description": "Classical Andalusian masterwork on spiritual stations (Maqamat) and wayfaring by the Khatib of Granada Sidi al-Mawwaq."
+    }
+  ]
+}

@@ -178,5 +178,5 @@ class AynEpubBuilder:
         
         out = Path(output_path)
         out.parent.mkdir(parents=True, exist_ok=True)
-        epub.write_epub(str(out), self.book, {})
+        epub.write_epub(str(out), self.book, {"epub3_pages": False})
         return str(out)
