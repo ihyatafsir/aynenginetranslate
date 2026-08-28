@@ -66,48 +66,56 @@ def check_memory_safety():
         time.sleep(3)
 
 def adaptive_chunk_text(raw_text, max_chunk_chars=4000):
-    pattern = r'\n(?=(?:#+\s*PageV\d+P\d+|###\s*\|\s*|\#+\s*(?:كتاب|باب|فصل|المسألة|الحديث|ذكر|فائدة|مسألة|القول|الأصل|المقدمة|التمهيد|المسلك|الطرف|الركن|الأصل|القطب)))'
-    sections = re.split(pattern, raw_text)
+    pattern = r'\n(?=(?:#*\s*PageV\d+P\d+|#*\s*\|\s*|#*\s*(?:كتاب|باب|فصل|المسألة|الحديث|ذكر|فائدة|مسألة|القول|الأصل|المقدمة|التمهيد|المسلك|الطرف|الركن|الأصل|القطب|المقالة|العقبة|القسم|النوع|الشرط)|===+))'
+    raw_sections = re.split(pattern, raw_text)
     
+    refined_sections = []
+    for sec in raw_sections:
+        sec_str = sec.strip()
+        if not sec_str:
+            continue
+        if len(sec_str) > max_chunk_chars:
+            paras = sec_str.split("\n\n")
+            if len(paras) <= 1:
+                paras = sec_str.split("\n")
+            cur_p = []
+            cur_p_len = 0
+            for p in paras:
+                p_str = p.strip()
+                if not p_str:
+                    continue
+                if cur_p_len + len(p_str) > max_chunk_chars and cur_p:
+                    refined_sections.append("\n\n".join(cur_p))
+                    cur_p = [p_str]
+                    cur_p_len = len(p_str)
+                else:
+                    cur_p.append(p_str)
+                    cur_p_len += len(p_str)
+            if cur_p:
+                refined_sections.append("\n\n".join(cur_p))
+        else:
+            refined_sections.append(sec_str)
+            
     chunks = []
     buf = []
     buf_len = 0
     sec_idx = 1
     
-    for sec in sections:
-        sec_str = sec.strip()
-        if not sec_str:
-            continue
-        
-        if len(sec_str) > max_chunk_chars:
-            paras = [p.strip() for p in sec_str.split("\n\n") if p.strip()]
-            for p in paras:
-                if buf_len + len(p) > max_chunk_chars and buf:
-                    chunks.append({
-                        "chapter_index": sec_idx,
-                        "title_ar": f"Section {sec_idx}",
-                        "text": "\n\n".join(buf)
-                    })
-                    sec_idx += 1
-                    buf = [p]
-                    buf_len = len(p)
-                else:
-                    buf.append(p)
-                    buf_len += len(p)
+    for sec in refined_sections:
+        sec_len = len(sec)
+        if buf_len + sec_len > max_chunk_chars and buf:
+            chunks.append({
+                "chapter_index": sec_idx,
+                "title_ar": f"Section {sec_idx}",
+                "text": "\n\n".join(buf)
+            })
+            sec_idx += 1
+            buf = [sec]
+            buf_len = sec_len
         else:
-            if buf_len + len(sec_str) > max_chunk_chars and buf:
-                chunks.append({
-                    "chapter_index": sec_idx,
-                    "title_ar": f"Section {sec_idx}",
-                    "text": "\n\n".join(buf)
-                })
-                sec_idx += 1
-                buf = [sec_str]
-                buf_len = len(sec_str)
-            else:
-                buf.append(sec_str)
-                buf_len += len(sec_str)
-                
+            buf.append(sec)
+            buf_len += sec_len
+            
     if buf:
         chunks.append({
             "chapter_index": sec_idx,

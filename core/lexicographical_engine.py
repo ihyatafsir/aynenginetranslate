@@ -108,20 +108,44 @@ class LexicographicalTranslationEngine:
         return summary
 
     def chunk_manuscript(self, raw_text):
-        """Zero-truncation adaptive chunking partitioned on section markers."""
-        chunks = []
-        raw_sections = re.split(r'\n(?=(?:#+\s*PageV\d+P\d+|###\s*\|\s*|\#+\s*(?:الفصل|الباب|المسألة|القول|الأصل)))', raw_text)
+        """Zero-truncation adaptive chunking partitioned on section markers and paragraphs."""
+        pattern = r'\n(?=(?:#*\s*PageV\d+P\d+|#*\s*\|\s*|#*\s*(?:كتاب|باب|فصل|المسألة|الحديث|ذكر|فائدة|مسألة|القول|الأصل|المقدمة|التمهيد|المسلك|الطرف|الركن|القطب|المقالة|العقبة|القسم|النوع|الشرط)|===+))'
+        raw_sections = re.split(pattern, raw_text)
         
-        current_chunk = []
-        current_len = 0
-        section_idx = 1
-        
+        refined_sections = []
         for sec in raw_sections:
             sec_str = sec.strip()
             if not sec_str:
                 continue
-            
-            sec_len = len(sec_str)
+            if len(sec_str) > self.max_chunk_chars:
+                paras = sec_str.split("\n\n")
+                if len(paras) <= 1:
+                    paras = sec_str.split("\n")
+                cur_p = []
+                cur_p_len = 0
+                for p in paras:
+                    p_str = p.strip()
+                    if not p_str:
+                        continue
+                    if cur_p_len + len(p_str) > self.max_chunk_chars and cur_p:
+                        refined_sections.append("\n\n".join(cur_p))
+                        cur_p = [p_str]
+                        cur_p_len = len(p_str)
+                    else:
+                        cur_p.append(p_str)
+                        cur_p_len += len(p_str)
+                if cur_p:
+                    refined_sections.append("\n\n".join(cur_p))
+            else:
+                refined_sections.append(sec_str)
+                
+        chunks = []
+        current_chunk = []
+        current_len = 0
+        section_idx = 1
+        
+        for sec in refined_sections:
+            sec_len = len(sec)
             if current_len + sec_len > self.max_chunk_chars and current_chunk:
                 chunks.append({
                     "chapter_index": section_idx,
@@ -129,10 +153,10 @@ class LexicographicalTranslationEngine:
                     "text": "\n\n".join(current_chunk)
                 })
                 section_idx += 1
-                current_chunk = [sec_str]
+                current_chunk = [sec]
                 current_len = sec_len
             else:
-                current_chunk.append(sec_str)
+                current_chunk.append(sec)
                 current_len += sec_len
                 
         if current_chunk:
