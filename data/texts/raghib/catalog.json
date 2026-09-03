@@ -1,0 +1,79 @@
+{
+  "author": "Al-Rāghib al-Iṣfahānī (أبو القاسم الحسين بن محمد بن المفضل الراغب الأصفهاني - d. 502 AH)",
+  "total_works": 6,
+  "created_at": "2026-09-03T22:24:04Z",
+  "works": [
+    {
+      "slug": "al_mufradat_fi_gharib_al_quran",
+      "title_ar": "المفردات في غريب القرآن",
+      "title_en": "The Vocabulary of Rare and Sublimely Structured Quranic Terms",
+      "category": "Quranic Semantics & Lexicography",
+      "url": "https://raw.githubusercontent.com/OpenITI/0525AH/master/data/0502RaghibIsbahani/0502RaghibIsbahani.Mufradat/0502RaghibIsbahani.Mufradat.Shamela0023636-ara1",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/raghib/al_mufradat_fi_gharib_al_quran.txt",
+      "file_name": "al_mufradat_fi_gharib_al_quran.txt",
+      "character_count": 1260783,
+      "word_count": 233899,
+      "size_kb": 2132.75
+    },
+    {
+      "slug": "al_dhariah_ila_makarim_al_shariah",
+      "title_ar": "الذريعة إلى مكارم الشريعة",
+      "title_en": "The Pathway to the Noblest Virtues of Sacred Law",
+      "category": "Sacred Ethics & Moral Philosophy",
+      "url": "https://raw.githubusercontent.com/OpenITI/0525AH/master/data/0502RaghibIsbahani/0502RaghibIsbahani.DharicaFiMakarimSharica/0502RaghibIsbahani.DharicaFiMakarimSharica.Shamela0001390-ara1",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/raghib/al_dhariah_ila_makarim_al_shariah.txt",
+      "file_name": "al_dhariah_ila_makarim_al_shariah.txt",
+      "character_count": 309435,
+      "word_count": 58052,
+      "size_kb": 538.81
+    },
+    {
+      "slug": "tafsil_al_nashatayn",
+      "title_ar": "تفصيل النشأتين وتحصيل السعادتين",
+      "title_en": "The Exposition of the Two Developments and Attainment of the Two Felicities",
+      "category": "Epistemology & Spiritual Felicity",
+      "url": "https://raw.githubusercontent.com/OpenITI/0525AH/master/data/0502RaghibIsbahani/0502RaghibIsbahani.TafsilNashatayn/0502RaghibIsbahani.TafsilNashatayn.Shamela0021562-ara1",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/raghib/tafsil_al_nashatayn.txt",
+      "file_name": "tafsil_al_nashatayn.txt",
+      "character_count": 92120,
+      "word_count": 17256,
+      "size_kb": 160.98
+    },
+    {
+      "slug": "jami_al_tafsir",
+      "title_ar": "جامع التفسير ومقدمته",
+      "title_en": "The Comprehensive Exegesis and Its Prolegomena",
+      "category": "Tafsir & Exegetical Methodology",
+      "url": "https://raw.githubusercontent.com/OpenITI/0525AH/master/data/0502RaghibIsbahani/0502RaghibIsbahani.Tafsir/0502RaghibIsbahani.Tafsir.Shamela0009231-ara1",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/raghib/jami_al_tafsir.txt",
+      "file_name": "jami_al_tafsir.txt",
+      "character_count": 1381361,
+      "word_count": 258717,
+      "size_kb": 2402.03
+    },
+    {
+      "slug": "muhadarat_al_udaba",
+      "title_ar": "محاضرات الأدباء ومحاورات الشعراء والبلغاء",
+      "title_en": "Lectures of the Literati and Dialogues of the Poets and Rhetoricians",
+      "category": "Classical Literature & Rhetoric",
+      "url": "https://raw.githubusercontent.com/OpenITI/0525AH/master/data/0502RaghibIsbahani/0502RaghibIsbahani.MuhadaratUdaba/0502RaghibIsbahani.MuhadaratUdaba.Shamela0009078-ara1",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/raghib/muhadarat_al_udaba.txt",
+      "file_name": "muhadarat_al_udaba.txt",
+      "character_count": 1948147,
+      "word_count": 378773,
+      "size_kb": 3340.96
+    },
+    {
+      "slug": "adab_ikhtilat_al_nas",
+      "title_ar": "أدب مخالطة الناس",
+      "title_en": "The Etiquette of Associating with People",
+      "category": "Social Conduct & Spiritual Etiquette",
+      "url": "https://raw.githubusercontent.com/OpenITI/0525AH/master/data/0502RaghibIsbahani/0502RaghibIsbahani.AdabIkhtilatNas/0502RaghibIsbahani.AdabIkhtilatNas.EScr20120414-ara1",
+      "file_path": "/home/absolut7/.gemini/antigravity/scratch/translation_engine_framework/data/texts/raghib/adab_ikhtilat_al_nas.txt",
+      "file_name": "adab_ikhtilat_al_nas.txt",
+      "character_count": 111882,
+      "word_count": 21951,
+      "size_kb": 192.66
+    }
+  ]
+}
