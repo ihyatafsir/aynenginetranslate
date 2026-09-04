@@ -130,6 +130,44 @@ class LexicographicalTranslationEngine:
         scored.sort(key=lambda x: x[0], reverse=True)
         return [r for s, r in scored[:max_candidates]]
 
+    def lookup_ayn(self, root):
+        """Lookup archaic phonetic etymology in Al-Khalil's Kitab al-Ayn."""
+        n_root = self.normalize_root(root)
+        if n_root in self.ayn_dict:
+            return str(self.ayn_dict[n_root])[:300]
+        patterns = [f"{n_root}:", f"({n_root})", f"{n_root} "]
+        for k, v in self.ayn_dict.items():
+            if not isinstance(v, str):
+                continue
+            for pat in patterns:
+                if pat in v:
+                    idx = v.find(pat)
+                    return f"[{k}] " + v[idx:idx+300].replace('\n', ' ')
+        return None
+
+    def match_sibawayh_rule(self, arabic_text):
+        """Extracts governing syntactic canon from Sibawayh's Al-Kitab based on periodic sentence structure."""
+        if not self.sibawayh_rules:
+            return None
+        # Pattern 1: Restriction / Haṣr (Innamā)
+        if 'إنما' in arabic_text or 'انما' in arabic_text:
+            for k, v in self.sibawayh_rules.items():
+                if 'إنما' in k or 'إنما' in v or 'ما' in k:
+                    return {"name": "باب الحصر والتقييد بإنما (Restriction & Focused Predication)", "canon": str(v)[:220].replace('\n', ' ')}
+        # Pattern 2: Interposition between governor and governed (Jar wa Majrur)
+        if any(p in arabic_text for p in [' في ', ' من ', ' إلى ', ' على ', ' بـ']):
+            for k, v in self.sibawayh_rules.items():
+                if 'بين الجار والمجرور' in k or 'بين الجار والمجرور' in v:
+                    return {"name": "باب الفصل بين الجار والمجرور (Prepositional Interposition)", "canon": str(v)[:220].replace('\n', ' ')}
+        # Pattern 3: Conditionals (Law, In, Idhā)
+        if any(c in arabic_text for c in [' لو ', ' لولا ', ' إذا ', ' ان ']):
+            for k, v in self.sibawayh_rules.items():
+                if 'شرط' in k or 'جواب' in v or 'ما يرتفع' in k:
+                    return {"name": "باب الرفع والتعليق بين الجزأين (Periodic Conditional Syntax)", "canon": str(v)[:220].replace('\n', ' ')}
+        # Default cardinal rule
+        first_k = list(self.sibawayh_rules.keys())[0]
+        return {"name": "باب المبتدأ والخبر وتوازن الإسناد (Subject-Predicate Equilibrium)", "canon": str(self.sibawayh_rules[first_k])[:220].replace('\n', ' ')}
+
     def get_quad_anchor_summary(self, root):
         """Extract multi-dimensional classical semantics for a root across all 4 lexicons."""
         n_root = self.normalize_root(root)
@@ -156,7 +194,7 @@ class LexicographicalTranslationEngine:
         if l_entry:
             summary["lisan_semantics"] = str(l_entry)[:300]
             
-        a_entry = self.ayn_dict.get(n_root)
+        a_entry = self.lookup_ayn(n_root)
         if a_entry:
             summary["ayn_etymology"] = str(a_entry)[:250]
             
@@ -186,6 +224,13 @@ class LexicographicalTranslationEngine:
             if summary["ayn_etymology"]:
                 lines.append(f"  • Kitab al-Ayn: \"{summary['ayn_etymology']}\"")
                 
+        # Append Sibawayh's syntactic canon
+        sib_rule = self.match_sibawayh_rule(arabic_text)
+        if sib_rule:
+            lines.append(f"\n### 📜 SĪBAWAYH SYNTACTIC CANON (AL-KITĀB):")
+            lines.append(f"  • Rule: {sib_rule['name']}")
+            lines.append(f"  • Governing Rule Excerpt: \"{sib_rule['canon']}\"")
+
         return "\n".join(lines) + "\n"
 
     def chunk_manuscript(self, raw_text):
@@ -324,7 +369,7 @@ class LexicographicalTranslationEngine:
             raise RuntimeError(f"API call completely failed after {max_retries} attempts.")
         return accumulated_content.strip()
 
-    def translate_passage(self, passage_text, title_ar="Section"):
+    def translate_passage(self, passage_text, title_ar="Section", prior_draft=None):
         """Executes the v4.0 Zero-Loss Active-RAG translation pipeline."""
         roots_str = ", ".join(list(self.used_roots)[-20:]) if self.used_roots else "None"
         rag_lexicon_context = self.build_active_rag_context(passage_text)
@@ -363,11 +408,15 @@ class LexicographicalTranslationEngine:
             f"[Verbatim 1st-person {target_lang_name} translation guided by the anchors above. MUST END ON A COMPLETE SENTENCE.]"
         )
 
+        draft_block = ""
+        if prior_draft and len(prior_draft.strip()) > 50 and not prior_draft.startswith("[API Error"):
+            draft_block = f"\n\n### 📝 PRIOR TRANSLATION DRAFT (REFERENCE BASELINE):\n\"\"\"\n{prior_draft.strip()}\n\"\"\"\n(Refine, heal any truncations, and harmonize with the Active-RAG scholia above)"
+
         user_prompt = (
             f"Book: {self.book_title_en} ({self.book_title_ar})\n"
             f"Author: {self.author}\n"
             f"Section Title: {title_ar}\n\n"
-            f"Arabic Text ({len(passage_text)} chars):\n\"\"\"\n{passage_text}\n\"\"\""
+            f"Arabic Text ({len(passage_text)} chars):\n\"\"\"\n{passage_text}\n\"\"\"{draft_block}"
         )
 
         output = self.call_api(system_prompt, user_prompt)

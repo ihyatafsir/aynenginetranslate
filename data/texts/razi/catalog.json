@@ -1,19 +1,204 @@
 {
-  "author": "Imam Fakhr al-Din al-Razi (الإمام فخر الدين الرازي)",
+  "author": "Imam Fakhr al-Din al-Razi (الإمام فخر الدين الرازي 544–606 AH)",
+  "total_works": 18,
   "works": [
     {
-      "slug": "itiqadat_firaq_al_muslimin",
-      "title_ar": "اعتقادات فرق المسلمين والمشركين",
-      "title_en": "The Doctrines of Islamic Sects and Polytheists (I'tiqadat Firaq al-Muslimin wa'l-Mushrikin)",
-      "file_name": "itiqadat_firaq_al_muslimin.txt",
-      "description": "Imam Fakhr al-Din al-Razi's authoritative comparative survey of Islamic theological schools (Mu'tazila, Ash'ari, Shi'a, Khawarij, Murji'a, Karramiyya, Jahmiyya, Sufis) and world religions (Philosophers, Dualists, Polytheists, Astrologers)."
+      "slug": "matalib_vol_01",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد الأول: في دلائل التوحيد والتنزيه",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 1: On the Proofs of Divine Unity and Transcendent Sanctification)",
+      "category": "Philosophical Kalam & Metaphysics",
+      "file_name": "matalib_vol_01.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_01.txt",
+      "character_count": 368346,
+      "word_count": 72215,
+      "size_kb": 632.38
+    },
+    {
+      "slug": "matalib_vol_02",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد الثاني: في صفات الجلال والإكرام",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 2: On the Attributes of Glory and Generosity)",
+      "category": "Philosophical Kalam & Metaphysics",
+      "file_name": "matalib_vol_02.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_02.txt",
+      "character_count": 195077,
+      "word_count": 38827,
+      "size_kb": 335.75
+    },
+    {
+      "slug": "matalib_vol_03",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد الثالث: في حدوث العالم والزمان",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 3: On the Temporal Origination of the World and Nature of Time)",
+      "category": "Philosophical Kalam & Metaphysics",
+      "file_name": "matalib_vol_03.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_03.txt",
+      "character_count": 410160,
+      "word_count": 80827,
+      "size_kb": 703.59
+    },
+    {
+      "slug": "matalib_vol_04",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد الرابع: في المكان والخلأ والملاء",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 4: On Space, Void, and Plenum)",
+      "category": "Philosophical Kalam & Physics",
+      "file_name": "matalib_vol_04.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_04.txt",
+      "character_count": 446263,
+      "word_count": 89446,
+      "size_kb": 760.61
+    },
+    {
+      "slug": "matalib_vol_05",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد الخامس: في مسألة الجوهر الفرد",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 5: On the Indivisible Atom and Substance)",
+      "category": "Philosophical Kalam & Atomism",
+      "file_name": "matalib_vol_05.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_05.txt",
+      "character_count": 209568,
+      "word_count": 41633,
+      "size_kb": 358.65
+    },
+    {
+      "slug": "matalib_vol_06",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد السادس: في الهيولى والصورة والأجسام",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 6: On Prime Matter, Form, and Bodies)",
+      "category": "Philosophical Kalam & Physics",
+      "file_name": "matalib_vol_06.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_06.txt",
+      "character_count": 354928,
+      "word_count": 69447,
+      "size_kb": 608.07
+    },
+    {
+      "slug": "matalib_vol_07",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد السابع: في النفس الناطقة وقواها",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 7: On the Rational Soul and Its Faculties)",
+      "category": "Philosophical Psychology & Epistemology",
+      "file_name": "matalib_vol_07.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_07.txt",
+      "character_count": 377420,
+      "word_count": 72792,
+      "size_kb": 646.65
+    },
+    {
+      "slug": "matalib_vol_08",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد الثامن: في النبوات والخوارق",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 8: On Prophethood and Miraculous Phenomena)",
+      "category": "Theology & Prophethood",
+      "file_name": "matalib_vol_08.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_08.txt",
+      "character_count": 240371,
+      "word_count": 46859,
+      "size_kb": 411.61
+    },
+    {
+      "slug": "matalib_vol_09",
+      "title_ar": "المطالب العالية من العلم الإلهي — المجلد التاسع: في المعاد والثواب والعقاب",
+      "title_en": "The Sublime Inquiries in Divine Metaphysics (Vol. 9: On Eschatology, Bodily Resurrection, and Ultimate Destiny)",
+      "category": "Eschatology & Metaphysics",
+      "file_name": "matalib_vol_09.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/matalib_vol_09.txt",
+      "character_count": 398332,
+      "word_count": 80293,
+      "size_kb": 674.73
+    },
+    {
+      "slug": "razi_asas",
+      "title_ar": "أساس التقديس في علم الكلام",
+      "title_en": "The Foundation of Divine Sanctification",
+      "category": "Kalam & Theology",
+      "file_name": "razi_asas.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_asas.txt",
+      "character_count": 203981,
+      "word_count": 38790,
+      "size_kb": 354.06
+    },
+    {
+      "slug": "razi_lawami",
+      "title_ar": "لوامع البينات شرح أسماء الله تعالى والصفات",
+      "title_en": "The Brilliant Illuminations: Commentary on the Divine Names and Attributes",
+      "category": "Divine Names & Kalam",
+      "file_name": "razi_lawami.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_lawami.txt",
+      "character_count": 418778,
+      "word_count": 74264,
+      "size_kb": 717.87
+    },
+    {
+      "slug": "razi_asrar_tanzil",
+      "title_ar": "أسرار التنزيل وأنوار التأويل",
+      "title_en": "The Secrets of Revelation and Lights of Exegesis",
+      "category": "Quranic Sciences & Kalam",
+      "file_name": "razi_asrar_tanzil.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_asrar_tanzil.txt",
+      "character_count": 138911,
+      "word_count": 27632,
+      "size_kb": 237.85
+    },
+    {
+      "slug": "razi_ismat_anbiya",
+      "title_ar": "عصمة الأنبياء عليهم السلام",
+      "title_en": "The Infallibility of the Prophets",
+      "category": "Prophethood & Theological Defense",
+      "file_name": "razi_ismat_anbiya.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_ismat_anbiya.txt",
+      "character_count": 111315,
+      "word_count": 20886,
+      "size_kb": 192.42
+    },
+    {
+      "slug": "razi_mahsul",
+      "title_ar": "المحصول في علم أصول الفقه",
+      "title_en": "The Harvest in the Science of Legal Jurisprudence",
+      "category": "Usul al-Fiqh",
+      "file_name": "razi_mahsul.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_mahsul.txt",
+      "character_count": 1321645,
+      "word_count": 250880,
+      "size_kb": 2313.24
+    },
+    {
+      "slug": "razi_arbain",
+      "title_ar": "كتاب الأربعين في أصول الدين",
+      "title_en": "The Forty Inquiries in the Principles of Religion",
+      "category": "Comprehensive Kalam",
+      "file_name": "razi_arbain.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_arbain.txt",
+      "character_count": 835614,
+      "word_count": 164673,
+      "size_kb": 1427.43
     },
     {
       "slug": "al_qada_wal_qadar",
-      "title_ar": "كتاب الجبر والقدر (القضاء والقدر)",
-      "title_en": "The Book of Divine Decree and Predestination (Al-Qada' wa'l-Qadar / Al-Jabr wa'l-Qadar)",
+      "title_ar": "الرسالة الكمالية في مسألة القضاء والقدر والعدل الإلهي",
+      "title_en": "The Kamaliyya Epistle on Divine Decree, Predestination, and Divine Justice",
+      "category": "Kalam & Free Will",
       "file_name": "al_qada_wal_qadar.txt",
-      "description": "Imam Fakhr al-Din al-Razi's monumental, rigorous philosophical and theological masterpiece resolving human free choice, divine power, causation, and predestination across 119 exhaustive investigations."
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/al_qada_wal_qadar.txt",
+      "character_count": 453039,
+      "word_count": 91501,
+      "size_kb": 774.25
+    },
+    {
+      "slug": "itiqadat_firaq_al_muslimin",
+      "title_ar": "اعتقادات فرق المسلمين والمشركين",
+      "title_en": "Doctrines of the Muslim Sects and the Polytheists",
+      "category": "Heresiology & Doxography",
+      "file_name": "itiqadat_firaq_al_muslimin.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/itiqadat_firaq_al_muslimin.txt",
+      "character_count": 26822,
+      "word_count": 4837,
+      "size_kb": 47.1
+    },
+    {
+      "slug": "razi_tafsir_kabir",
+      "title_ar": "مفاتيح الغيب (التفسير الكبير)",
+      "title_en": "Keys to the Unseen (The Great Exegesis / Tafsir al-Kabir)",
+      "category": "Encyclopedic Tafsir",
+      "file_name": "razi_tafsir_kabir.txt",
+      "file_path": "/home/absolut7/aynengineai/data/texts/razi/razi_tafsir_kabir.txt",
+      "character_count": 15959802,
+      "word_count": 2960486,
+      "size_kb": 27633.82
     }
   ]
 }
