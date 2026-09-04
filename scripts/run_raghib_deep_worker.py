@@ -116,34 +116,30 @@ def translate_work(work_meta):
     print(f"\n📚 Translation complete for {slug}! Building Dual-Edition EPUBs...")
     
     # 1. Pure English Reader Edition
-    builder_pure = AynEpubBuilder(title=title_en, author="Al-Rāghib al-Iṣfahānī", edition_type="PURE_SCHOLARLY")
+    pure_epub = EPUBS_DIR / f"{slug}_pure_en.epub"
+    builder_pure = AynEpubBuilder(title=title_en, author="Al-Rāghib al-Iṣfahānī (d. 502 AH)", edition_type="PURE_SCHOLARLY")
     for item in sorted(progress, key=lambda x: x["chapter_index"]):
-        body = f"<div class='section-ar-meta'><strong>{item['title_ar']}</strong></div>\n\n{item['translation']}"
-        builder_pure.add_chapter(item["title_en"], body, chapter_index=item["chapter_index"])
-    builder_pure.build(epub_pure)
-    print(f"  📗 Generated Pure Edition: {epub_pure.name} ({epub_pure.stat().st_size / 1024:.1f} KB)")
+        builder_pure.add_pure_scholarly_chapter(
+            title=item.get("title_en", f"Section {item.get('chapter_index', 1)}"),
+            translation_text=item.get("translation", "")
+        )
+    builder_pure.build(str(pure_epub))
+    print(f"  📗 Generated Pure Edition: {pure_epub.name} ({pure_epub.stat().st_size / 1024:.1f} KB)")
     
     # 2. Bilingual Apparatus Edition
-    builder_bilingual = AynEpubBuilder(title=title_en, author="Al-Rāghib al-Iṣfahānī", edition_type="BILINGUAL_LEXICAL")
+    bilingual_epub = EPUBS_DIR / f"{slug}_bilingual_lexical_en.epub"
+    builder_bilingual = AynEpubBuilder(title=f"{title_en} / {title_ar}", author="Al-Rāghib al-Iṣfahānī (d. 502 AH)", edition_type="BILINGUAL_APPARATUS")
     for item in sorted(progress, key=lambda x: x["chapter_index"]):
-        body = f"""
-        <div class="scholarly-apparatus">
-            <h3>Classical Arabic Apparatus & Lexicographical Anchors</h3>
-            <pre class="anchors-block">{item['anchors']}</pre>
-        </div>
-        <div class="arabic-source" dir="rtl" lang="ar">
-            <h4>النص العربي الأصيل</h4>
-            <p>{item['arabic_text']}</p>
-        </div>
-        <hr class="apparatus-separator"/>
-        <div class="english-translation">
-            <h4>Verbatim English Translation</h4>
-            <p>{item['translation']}</p>
-        </div>
-        """
-        builder_bilingual.add_chapter(item["title_en"], body, chapter_index=item["chapter_index"])
-    builder_bilingual.build(epub_bilingual)
-    print(f"  📘 Generated Bilingual Edition: {epub_bilingual.name} ({epub_bilingual.stat().st_size / 1024:.1f} KB)")
+        t_en = item.get("title_en", f"Section {item.get('chapter_index', 1)}")
+        t_ar = item.get("title_ar", "")
+        builder_bilingual.add_bilingual_apparatus_chapter(
+            title=f"{t_en} ({t_ar})" if t_ar else t_en,
+            arabic_text=item.get("arabic_text", ""),
+            quad_anchors=item.get("anchors", ""),
+            translation_text=item.get("translation", "")
+        )
+    builder_bilingual.build(str(bilingual_epub))
+    print(f"  📘 Generated Bilingual Edition: {bilingual_epub.name} ({bilingual_epub.stat().st_size / 1024:.1f} KB)")
 
 def main():
     print("=" * 80)

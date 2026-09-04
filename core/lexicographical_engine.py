@@ -56,7 +56,7 @@ class LexicographicalTranslationEngine:
         self.ayn_dict = self._load_json(self.lexicons_dir / "kitab_al_ayn" / "kitab_al_ayn_dictionary.json")
         self.raghib_dict = self._load_json(self.lexicons_dir / "raghib_mufradat" / "raghib_mufradat_dictionary.json")
         self.zamakhshari_dict = self._load_json(self.lexicons_dir / "zamakhshari_asas" / "asas_balagha_dictionary.json")
-        self.sibawayh_rules = self._load_json(self.grammars_dir / "sibawayh_kitab" / "sibawayh_rules.json")
+        self.sibawayh_rules = self._load_json(self.grammars_dir / "sibawayh_rules.json")
 
     def _load_json(self, path):
         if path.exists():
@@ -77,17 +77,23 @@ class LexicographicalTranslationEngine:
         root = re.sub(r'[^ء-ي]', '', root)
         return root.strip()
 
+    CLASSICAL_STOP_ROOTS = {
+        'قول', 'كون', 'ليس', 'فعل', 'اخذ', 'جعل', 'اتي', 'جيء', 'ذهب', 
+        'راي', 'نظر', 'وجد', 'دخل', 'خرج', 'قيل', 'ذكر', 'بين', 'عند',
+        'غير', 'مثل', 'نحو', 'سوي', 'بعض', 'كلل', 'شيء', 'قوم', 'رجل',
+        'امر', 'واحد', 'اول', 'اخر', 'قبل', 'بعد', 'دون', 'فوق', 'تحت',
+        'شيخ', 'امام', 'رحم', 'الل', 'تبارك', 'تعال', 'سلم', 'صلي', 'رضي'
+    }
+
     def extract_candidate_roots(self, arabic_text, max_candidates=5):
-        """Scans the Arabic text for major roots present in our classical lexicons."""
+        """Scans Arabic text and extracts roots prioritized by Theological & Philological Salience."""
         words = re.findall(r'[ء-ي]{3,}', arabic_text)
-        candidates = []
-        seen = set()
-        
         prefixes = ['وال', 'فال', 'كال', 'بال', 'لل', 'ال', 'است', 'يت', 'مت', 'وت', 'فت', 'ت', 'ي', 'ن', 'م']
         suffixes = ['ات', 'ون', 'ين', 'ان', 'ية', 'هم', 'كم', 'نا', 'ها', 'ه', 'ي']
         
+        root_counts = {}
         for w in words:
-            if len(w) <= 2 or w in seen:
+            if len(w) <= 2:
                 continue
             clean_w = w
             for p in prefixes:
@@ -101,12 +107,28 @@ class LexicographicalTranslationEngine:
                     
             if len(clean_w) == 3:
                 norm = self.normalize_root(clean_w)
-                if norm not in seen and (norm in self.raghib_dict or norm in self.zamakhshari_dict or norm in self.lisan_dict or norm in self.ayn_dict):
-                    seen.add(norm)
-                    candidates.append(norm)
-                    if len(candidates) >= max_candidates:
-                        break
-        return candidates
+                if norm in self.CLASSICAL_STOP_ROOTS:
+                    continue
+                if (norm in self.raghib_dict or norm in self.zamakhshari_dict or norm in self.lisan_dict or norm in self.ayn_dict):
+                    root_counts[norm] = root_counts.get(norm, 0) + 1
+
+        # Salience Ranking:
+        # 1. Al-Mufradat (Quranic & Theological Specialty Lexicon): +15 points
+        # 2. Asas al-Balaghah (Haqiqah vs Majaz): +8 points
+        # 3. Frequency in text: +3 points per occurrence
+        scored = []
+        for root, count in root_counts.items():
+            score = count * 3
+            if root in self.raghib_dict:
+                score += 15
+            if root in self.zamakhshari_dict:
+                z = self.zamakhshari_dict[root]
+                if isinstance(z, dict) and z.get("metaphorical_usage"):
+                    score += 8
+            scored.append((score, root))
+
+        scored.sort(key=lambda x: x[0], reverse=True)
+        return [r for s, r in scored[:max_candidates]]
 
     def get_quad_anchor_summary(self, root):
         """Extract multi-dimensional classical semantics for a root across all 4 lexicons."""
