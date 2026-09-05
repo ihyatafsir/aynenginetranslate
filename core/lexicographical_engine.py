@@ -2,7 +2,7 @@
 """
 lexicographical_engine.py
 
-AynEngine AI v4.0.0 Sovereign Edition: Zero-Loss Active-RAG Translation Framework
+AynEngine AI v5.0.0 Sovereign Morphological Edition: Zero-Loss Active-RAG Translation Framework
 Designed for classical Arabic philosophical, theological (Kalam), and scientific literature.
 
 Key Innovations:
@@ -85,32 +85,106 @@ class LexicographicalTranslationEngine:
         'شيخ', 'امام', 'رحم', 'الل', 'تبارك', 'تعال', 'سلم', 'صلي', 'رضي'
     }
 
+    def extract_word_root_candidates(self, word):
+        """Morphological pattern un-affixing (Awzān reduction) for classical Arabic terms."""
+        if not word or len(word) < 3:
+            return []
+            
+        w = re.sub(r'[ً-ٰٟ]', '', word)
+        w = re.sub(r'[إأآٱ]', 'ا', w)
+        w = re.sub(r'ى', 'ي', w)
+        w = re.sub(r'[^ء-ي]', '', w).strip()
+        if len(w) < 3:
+            return []
+
+        # 1. Strip compound / definite article prefixes
+        prefixes = ['وال', 'فال', 'كال', 'بال', 'لل', 'ال', 'است', 'يت', 'مت', 'وت', 'فت']
+        for p in prefixes:
+            if w.startswith(p) and len(w) - len(p) >= 3:
+                w = w[len(p):]
+                break
+
+        # 2. Strip multi-letter suffixes and feminine tāʾ marbūṭah
+        suffixes = ['ات', 'ون', 'ين', 'ان', 'ية', 'هم', 'هن', 'هما', 'كم', 'كن', 'كما', 'نا', 'ها', 'ة']
+        for s in suffixes:
+            if w.endswith(s) and len(w) - len(s) >= 3:
+                w = w[:-len(s)]
+                break
+
+        cands = set()
+        L = len(w)
+        if L == 3:
+            cands.add(w)
+        elif L == 4:
+            # فَعِيل / فَعُول (e.g. لطيف, عظيم, شريف, حدود, قلوب, علوم)
+            if w[2] in ('ي', 'و'):
+                cands.add(w[0] + w[1] + w[3])
+            # فَاعِل (e.g. عالم, عارف, حاكم, قادر)
+            if w[1] == 'ا':
+                cands.add(w[0] + w[2] + w[3])
+            # مَفْعَل / مُفْعِل (e.g. منبع, معدن, مدرك)
+            if w[0] == 'م':
+                cands.add(w[1] + w[2] + w[3])
+            # تَفْعِيل / تَفَعُّل (e.g. تقليب, تعليق)
+            if w[0] == 'ت':
+                cands.add(w[1] + w[2] + w[3])
+            # أَفْعَل (e.g. أفقه, أحسن, أكبر)
+            if w[0] == 'ا':
+                cands.add(w[1] + w[2] + w[3])
+            # Clitic pronoun at end (e.g. قوله, ربه, علمه)
+            if w[3] in ('ه', 'ك', 'ي'):
+                cands.add(w[0:3])
+        elif L == 5:
+            # مَفْعُول (e.g. معلوم, مفهوم, مكتوب, موجود)
+            if w[0] == 'م' and w[3] == 'و':
+                cands.add(w[1] + w[2] + w[4])
+            # تَفْعِيل (e.g. تخصيص, تحويل, تصريف)
+            if w[0] == 'ت' and w[3] == 'ي':
+                cands.add(w[1] + w[2] + w[4])
+            # مُفَاعَل (e.g. مخاطب, معاتب, مطالب)
+            if w[0] == 'م' and w[2] == 'ا':
+                cands.add(w[1] + w[3] + w[4])
+            # إِفْعَال (e.g. إدراك, إحسان, إفساد)
+            if w[0] == 'ا' and w[3] == 'ا':
+                cands.add(w[1] + w[2] + w[4])
+            # افْتِعَال short (e.g. اختيار)
+            if w[0] == 'ا' and w[2] == 'ت':
+                cands.add(w[1] + w[3] + w[4])
+            # Clitic pronoun on 4-letter stem (e.g. لطيفه, كلامهم)
+            if w[4] in ('ه', 'ك', 'ي') and w[2] in ('ي', 'و'):
+                cands.add(w[0] + w[1] + w[3])
+        elif L == 6:
+            # افْتِعَال (e.g. اشتراك, اعتبارات)
+            if w[0] == 'ا' and w[2] == 'ت' and w[4] == 'ا':
+                cands.add(w[1] + w[3] + w[5])
+            # انْفِعَال (e.g. انقلاب)
+            if w[0] == 'ا' and w[1] == 'ن' and w[4] == 'ا':
+                cands.add(w[2] + w[3] + w[5])
+            # اسْتِفْعَال (e.g. استنباط, استكثار)
+            if w.startswith('است') and w[4] == 'ا':
+                cands.add(w[3] + w[4] + w[5])
+            # أَفَاعِيل (e.g. أغاليط)
+            if w[0] == 'ا' and w[2] == 'ا' and w[4] == 'ي':
+                cands.add(w[1] + w[3] + w[5])
+
+        valid = []
+        for c in cands:
+            norm = self.normalize_root(c)
+            if norm not in self.CLASSICAL_STOP_ROOTS:
+                if (norm in self.raghib_dict or norm in self.zamakhshari_dict or 
+                    norm in self.lisan_dict or norm in self.ayn_dict):
+                    valid.append(norm)
+        return valid
+
     def extract_candidate_roots(self, arabic_text, max_candidates=5):
         """Scans Arabic text and extracts roots prioritized by Theological & Philological Salience."""
         words = re.findall(r'[ء-ي]{3,}', arabic_text)
-        prefixes = ['وال', 'فال', 'كال', 'بال', 'لل', 'ال', 'است', 'يت', 'مت', 'وت', 'فت', 'ت', 'ي', 'ن', 'م']
-        suffixes = ['ات', 'ون', 'ين', 'ان', 'ية', 'هم', 'كم', 'نا', 'ها', 'ه', 'ي']
         
         root_counts = {}
         for w in words:
-            if len(w) <= 2:
-                continue
-            clean_w = w
-            for p in prefixes:
-                if clean_w.startswith(p) and len(clean_w) - len(p) >= 3:
-                    clean_w = clean_w[len(p):]
-                    break
-            for s in suffixes:
-                if clean_w.endswith(s) and len(clean_w) - len(s) >= 3:
-                    clean_w = clean_w[:-len(s)]
-                    break
-                    
-            if len(clean_w) == 3:
-                norm = self.normalize_root(clean_w)
-                if norm in self.CLASSICAL_STOP_ROOTS:
-                    continue
-                if (norm in self.raghib_dict or norm in self.zamakhshari_dict or norm in self.lisan_dict or norm in self.ayn_dict):
-                    root_counts[norm] = root_counts.get(norm, 0) + 1
+            cands = self.extract_word_root_candidates(w)
+            for norm in cands:
+                root_counts[norm] = root_counts.get(norm, 0) + 1
 
         # Salience Ranking:
         # 1. Al-Mufradat (Quranic & Theological Specialty Lexicon): +15 points
@@ -370,7 +444,7 @@ class LexicographicalTranslationEngine:
         return accumulated_content.strip()
 
     def translate_passage(self, passage_text, title_ar="Section", prior_draft=None):
-        """Executes the v4.0 Zero-Loss Active-RAG translation pipeline."""
+        """Executes the v5.0.0 Sovereign Morphological Zero-Loss Active-RAG translation pipeline."""
         roots_str = ", ".join(list(self.used_roots)[-20:]) if self.used_roots else "None"
         rag_lexicon_context = self.build_active_rag_context(passage_text)
 
@@ -379,7 +453,7 @@ class LexicographicalTranslationEngine:
         authorial_voice = "Unë them... / Dije se..." if is_albanian else "I say... / Know that..."
 
         system_prompt = (
-            f"You are AynEngine AI (v4.0 Sovereign Edition) — the premier Quad-Lexical Classical Arabic Translation Engine.\n"
+            f"You are AynEngine AI (v5.0.0 Sovereign Morphological Edition) — the premier Quad-Lexical Classical Arabic Translation Engine.\n"
             f"You specialize in verbatim, zero-loss scholarly translation of classical Islamic theological (Kalam), philosophical, and Quranic texts by {self.author}.\n"
             f"Target Language: {target_lang_name}.\n\n"
             "🏛️ QUAD-LEXICAL & SYNTACTIC ANCHOR CONSTELLATION:\n"
@@ -390,6 +464,13 @@ class LexicographicalTranslationEngine:
             "4. AL-KITAB (Sibawayh): Syntactic parsing rules for periodic sentence structures.\n\n"
             f"{rag_lexicon_context}\n"
             f"AVOID RECENTLY USED ROOTS: {roots_str}\n\n"
+            "⚖️ THEOLOGICAL & PHILOSOPHICAL ONTOLOGY APPARATUS (KALAM PRECISION):\n"
+            "- IMMATERIAL SPIRITUAL REALITIES (AL-LAṬĀ'IF) vs CORPOREAL SUBSTANCES (AL-JAWĀHIR):\n"
+            "  * Never translate 'laṭīfah' (لطيفة) as physical/spatial 'substance' (which conflates with Kalam jawhar/ousia).\n"
+            "  * Translate 'laṭīfah rabbāniyyah' as 'divine subtlety [immaterial spiritual reality]' or 'subtle divine reality'.\n"
+            "  * Strictly distinguish between 'takhṣīṣ' (semantic specification/restriction) and 'naql' (lexical transfer/conversion).\n"
+            "  * Render 'musammayāt' as 'referents / designated realities' and 'ḥudūd' as 'definitions / formal boundaries'.\n"
+            "  * Render 'aʿrāḍ' as 'accidents' and 'jawhar' as 'substance' (strictly in distinction to laṭīfah).\n\n"
             "📜 ZERO-LOSS SCHOLARLY STANDARDS:\n"
             f"- 100% Verbatim translation in the authentic 1st-person authorial voice ('{authorial_voice}').\n"
             "- ZERO text cuts, zero skipping, and zero omissions. Every single line of Arabic MUST be translated.\n"
