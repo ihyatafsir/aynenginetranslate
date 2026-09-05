@@ -155,7 +155,7 @@ class AynEpubBuilder:
     </div>
     
     <div class="apparatus-box">
-        <div class="apparatus-title">🏛️ Quad-Lexical & Syntactic Apparatus (AynEngine AI v3.0.0)</div>
+        <div class="apparatus-title">🏛️ 5-Pillar Lexicographical Apparatus (AynEngine AI v4.0 Sovereign Edition)</div>
         <div>{anchors_html}</div>
     </div>
     
