@@ -80,3 +80,33 @@ python3 scripts/run_classical_library_dual_edition_pipeline.py --author all
 # 3. Sync to Google Drive
 rclone copy data/epubs/ gdrive:aynengine_ai_classical_library/
 ```
+
+---
+
+## 💻 AynEngine AI Coding Edition (`ayncode`)
+
+A sovereign, epistemic software engineering engine guided by the **5 Classical Arabic Lexicographical & Grammatical Pillars**:
+
+| Pillar | Classical Canon | Software Engineering Invariant |
+| :--- | :--- | :--- |
+| **1. Teleology & Domain Ontology** | *Al-Mufradāt* (al-Rāghib al-Iṣfahānī) | Pure domain modeling; every entity has a singular *Ghāyah*; eliminate generic 'data/manager' wrappers. |
+| **2. Eloquence & Abstraction Integrity** | *Asās al-Balāghah* (al-Zamakhsharī) | Delineates *Ḥaqīqah* (runtime execution) from *Majāz* (abstractions); zero leaky abstractions (*Majāz Mukhil*); maximal *Balāghah* (minimal lines for maximal power). |
+| **3. State-Space & Error Taxonomy** | *Lisān al-ʿArab* (Ibn Manẓūr) | Exhaustive morphological coverage; zero unhandled match arms or silent failures; complete lifecycle state handling. |
+| **4. Primitive Decomposition & Safety** | *Kitāb al-ʿAyn* (al-Farāhīdī) | Decomposes logic into orthogonal, irreducible primitives; makes illegal states unrepresentable in the type system. |
+| **5. Syntactic Governance & AST Integrity** | *Al-Kitāb* (Sībawayh) | Strict caller-callee governance (*ʿĀmil wa Maʿmūl*); strict static typing; zero circular dependencies; compile-time AST validation. |
+
+### CLI Usage (`./ayncode`)
+
+```bash
+# 1. Synthesize production-grade code (Zero-Loss standard)
+./ayncode gen "Create an in-memory sliding-window rate limiter with token bucket fallback" -l python -o rate_limiter.py
+
+# 2. Perform 5-Pillar Epistemic Code Audit on a file or project
+./ayncode audit ./core/coding_engine.py
+
+# 3. Epistemic Refactoring (eliminating leaky abstractions and unhandled errors)
+./ayncode refactor ./legacy_module.py -g "Decompose into atomic primitives and make illegal states unrepresentable" -i
+
+# 4. View the 5 Classical Pillars and their software engineering mappings
+./ayncode pillars
+```

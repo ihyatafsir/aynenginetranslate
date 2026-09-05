@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""
+ayncode
+
+AynEngine AI Coding Edition - Sovereign CLI Developer Tool
+Guided by the 5 Classical Arabic Lexicographical & Grammatical Pillars:
+1. Al-Mufradāt (al-Rāghib) -> Ontological Domain Modeling & Teleology
+2. Asās al-Balāghah (al-Zamakhsharī) -> Idiomatic Eloquence & Abstraction Integrity
+3. Lisān al-ʿArab (Ibn Manẓūr) -> Exhaustive Error Taxonomy & State-Space
+4. Kitāb al-ʿAyn (al-Farāhīdī) -> Atomic Primitive Decomposition
+5. Al-Kitāb (Sībawayh) -> Syntactic Governance & AST Integrity
+"""
+
+import os
+import sys
+import argparse
+from pathlib import Path
+
+# Add repo root to path
+script_path = Path(__file__).resolve()
+BASE_DIR = script_path.parent if (script_path.parent / "core").exists() else script_path.parent.parent
+sys.path.insert(0, str(BASE_DIR))
+
+from core.coding_engine import AynCodingEngine
+
+# ANSI Color formatting
+BOLD = "\033[1m"
+RESET = "\033[0m"
+GREEN = "\033[32m"
+CYAN = "\033[36m"
+YELLOW = "\033[33m"
+MAGENTA = "\033[35m"
+RED = "\033[31m"
+
+BANNER = f"""{CYAN}{BOLD}
+   █████╗ ██╗   ██╗███╗   ██╗ ██████╗ ██████╗ ██████╗ ███████╗
+  ██╔══██╗╚██╗ ██╔╝████╗  ██║██╔════╝██╔═══██╗██╔══██╗██╔════╝
+  ███████║ ╚████╔╝ ██╔██╗ ██║██║     ██║   ██║██║  ██║█████╗  
+  ██╔══██║  ╚██╔╝  ██║╚██╗██║██║     ██║   ██║██║  ██║██╔══╝  
+  ██║  ██║   ██║   ██║ ╚████║╚██████╗╚██████╔╝██████╔╝███████╗
+  ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝
+{RESET}{BOLD}🏛️ AynEngine AI Coding Edition: Sovereign 5-Pillar Epistemic Engine{RESET}
+"""
+
+def print_banner():
+    print(BANNER)
+
+def cmd_gen(args, engine: AynCodingEngine):
+    prompt = args.prompt
+    lang = args.language.lower()
+    output_path = Path(args.output) if args.output else None
+
+    print(f"\n{CYAN}⚡ Synthesizing code grounded in 5-Pillar Epistemic Apparatus...{RESET}")
+    print(f"Target Language: {BOLD}{lang.upper()}{RESET} | Mode: {BOLD}Zero-Loss Sovereign{RESET}\n")
+
+    res = engine.synthesize(prompt=prompt, language=lang)
+
+    print(f"\n{GREEN}{BOLD}════════════════════════════════════════════════════════════════════════════════{RESET}")
+    print(f"{GREEN}{BOLD}✅ SYNTHESIS COMPLETE in {res['duration_seconds']}s | Syntax Valid: {res['syntax_valid']}{RESET}")
+    print(f"{GREEN}{BOLD}════════════════════════════════════════════════════════════════════════════════{RESET}\n")
+
+    if args.code_only:
+        print(res["code"])
+    else:
+        print(res["raw_output"])
+
+    if output_path:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(res["code"], encoding="utf-8")
+        print(f"\n{GREEN}💾 Code saved to {output_path.resolve()}{RESET}")
+
+def cmd_audit(args, engine: AynCodingEngine):
+    target = Path(args.target)
+    if not target.exists():
+        print(f"{RED}❌ Error: File or path not found: {target}{RESET}")
+        sys.exit(1)
+
+    files_to_audit = []
+    if target.is_file():
+        files_to_audit.append(target)
+    else:
+        for ext in ["*.py", "*.ts", "*.js", "*.rs", "*.go", "*.c", "*.cpp", "*.sql", "*.sh"]:
+            files_to_audit.extend(list(target.rglob(ext)))
+
+    if not files_to_audit:
+        print(f"{YELLOW}⚠️ No source files found to audit in {target}{RESET}")
+        return
+
+    print(f"\n{CYAN}🔍 Auditing {len(files_to_audit)} file(s) under 5-Pillar Epistemic Lens...{RESET}\n")
+
+    for fpath in files_to_audit:
+        print(f"{BOLD}📄 Auditing `{fpath.relative_to(Path.cwd()) if fpath.is_relative_to(Path.cwd()) else fpath}`...{RESET}")
+        code = fpath.read_text(encoding="utf-8", errors="ignore")
+        lang = args.language or fpath.suffix.lstrip('.') or "text"
+
+        res = engine.audit(code=code, language=lang, filename=fpath.name)
+        print(f"\n{res['audit_report']}\n")
+        print(f"{CYAN}{'─'*80}{RESET}\n")
+
+def cmd_refactor(args, engine: AynCodingEngine):
+    target = Path(args.target)
+    if not target.is_file():
+        print(f"{RED}❌ Error: Target must be an existing file: {target}{RESET}")
+        sys.exit(1)
+
+    code = target.read_text(encoding="utf-8", errors="ignore")
+    lang = args.language or target.suffix.lstrip('.') or "python"
+    goal = args.goal or "Purify architecture according to 5-Pillar Classical Standard"
+
+    print(f"\n{CYAN}🛠️ Refactoring `{target.name}` to 5-Pillar Classical Standard...{RESET}")
+    print(f"Goal: {goal}\n")
+
+    res = engine.refactor(code=code, language=lang, goal=goal)
+
+    print(f"\n{GREEN}{BOLD}✅ REFACTORING COMPLETE in {res['duration_seconds']}s | Syntax Valid: {res['syntax_valid']}{RESET}\n")
+    print(res["raw_output"])
+
+    if args.in_place:
+        target.write_text(res["refactored_code"], encoding="utf-8")
+        print(f"\n{GREEN}💾 Updated {target.resolve()} in-place.{RESET}")
+    elif args.output:
+        out = Path(args.output)
+        out.write_text(res["refactored_code"], encoding="utf-8")
+        print(f"\n{GREEN}💾 Saved refactored code to {out.resolve()}.{RESET}")
+
+def cmd_pillars(args):
+    print_banner()
+    print(f"""
+{BOLD}The 5 Classical Pillars of AynEngine AI Coding Edition:{RESET}
+
+{GREEN}{BOLD}1. Al-Mufradāt fī Gharīb al-Qurʾān (Al-Rāghib al-Iṣfahānī, d. 502 AH){RESET}
+   • {CYAN}Core Discipline:{RESET} Ontological Domain Modeling & Teleology (Ghāyah).
+   • {CYAN}Coding Rule:{RESET} Every class, type, and function must have a singular, transparent Ghāyah.
+     Eliminate amorphous generic names ('data', 'manager', 'process').
+     Pure distinction between ontological essence (immutability) and accidental state.
+
+{GREEN}{BOLD}2. Asās al-Balāghah (Al-Zamakhsharī, d. 538 AH){RESET}
+   • {CYAN}Core Discipline:{RESET} Idiomatic Eloquence (Balāghah) & Abstraction Integrity (Ḥaqīqah vs Majāz).
+   • {CYAN}Coding Rule:{RESET} Distinguish literal machine reality (CPU, IO, allocations) from metaphors (ORMs, proxies).
+     Zero leaky abstractions (Majāz Mukhil). Eliminate stuttering boilerplate; write lean, high-impact code.
+
+{GREEN}{BOLD}3. Lisān al-ʿArab (Ibn Manẓūr, d. 711 AH){RESET}
+   • {CYAN}Core Discipline:{RESET} Exhaustive State-Space, Edge-Case Coverage & Error Taxonomy.
+   • {CYAN}Coding Rule:{RESET} Exhaustive morphological coverage. Zero unhandled match arms, unhandled rejections,
+     or silent failures. Explicit lifecycle state modeling: Init -> Active -> Degraded -> Closed -> Failed.
+
+{GREEN}{BOLD}4. Kitāb al-ʿAyn (Al-Farāhīdī, d. 175 AH){RESET}
+   • {CYAN}Core Discipline:{RESET} Atomic Primitive Decomposition & Combinatorial Permutations.
+   • {CYAN}Coding Rule:{RESET} Decompose systems into orthogonal, irreducible primitives.
+     Combinatorial state safety: Make illegal states unrepresentable in the type system.
+
+{GREEN}{BOLD}5. Al-Kitāb (Sībawayh, d. 180 AH){RESET}
+   • {CYAN}Core Discipline:{RESET} Syntactic Governance (ʿĀmil/Maʿmūl), Strict Typing & AST Integrity.
+   • {CYAN}Coding Rule:{RESET} Strict caller-callee hierarchy (Governor -> Governed -> Mutation).
+     Zero circular dependencies. Strict static typing, pure data flow, and unambiguous contracts.
+""")
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="AynEngine AI Coding Edition: Sovereign 5-Pillar Epistemic Code Engine",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    subparsers = parser.add_subparsers(dest="subcommand", help="Available subcommands")
+
+    # Command: gen
+    p_gen = subparsers.add_parser("gen", help="Synthesize complete code from a prompt")
+    p_gen.add_argument("prompt", type=str, help="Coding specification or prompt")
+    p_gen.add_argument("-l", "--language", type=str, default="python", help="Target programming language (default: python)")
+    p_gen.add_argument("-o", "--output", type=str, help="Output file path to save code")
+    p_gen.add_argument("--code-only", action="store_true", help="Print only raw code without epistemic rationale")
+
+    # Command: audit
+    p_audit = subparsers.add_parser("audit", help="Perform 5-Pillar Epistemic Code Audit")
+    p_audit.add_argument("target", type=str, help="File or directory to audit")
+    p_audit.add_argument("-l", "--language", type=str, help="Explicit language override")
+
+    # Command: refactor
+    p_refactor = subparsers.add_parser("refactor", help="Refactor code to 5-Pillar standards")
+    p_refactor.add_argument("target", type=str, help="File to refactor")
+    p_refactor.add_argument("-g", "--goal", type=str, help="Specific refactoring goal")
+    p_refactor.add_argument("-l", "--language", type=str, help="Language override")
+    p_refactor.add_argument("-o", "--output", type=str, help="Output file")
+    p_refactor.add_argument("-i", "--in-place", action="store_true", help="Overwrite file in-place")
+
+    # Command: pillars
+    p_pillars = subparsers.add_parser("pillars", help="Explain the 5 Classical Pillars and their software mappings")
+
+    args = parser.parse_args()
+
+    if not args.subcommand:
+        print_banner()
+        parser.print_help()
+        sys.exit(0)
+
+    if args.subcommand == "pillars":
+        cmd_pillars(args)
+        sys.exit(0)
+
+    # Initialize Engine for operational commands
+    engine = AynCodingEngine()
+
+    if args.subcommand == "gen":
+        cmd_gen(args, engine)
+    elif args.subcommand == "audit":
+        cmd_audit(args, engine)
+    elif args.subcommand == "refactor":
+        cmd_refactor(args, engine)
+
+if __name__ == "__main__":
+    main()
