@@ -1,0 +1,33 @@
+{
+  "category": "Classical Islamic Heritage & Spiritual Masterworks",
+  "works": [
+    {
+      "slug": "al_shifa_qadi_iyad",
+      "title_ar": "كتاب الشفا بتعريف حقوق المصطفى صلى الله عليه وسلم",
+      "title_en": "Kitab al-Shifa bi-Ta'rif Huquq al-Mustafa",
+      "author": "Qadi 'Iyad al-Yahsubi (d. 544 AH)",
+      "file_path": "data/texts/heritage/al_shifa_qadi_iyad.txt"
+    },
+    {
+      "slug": "sunan_al_muhtadin",
+      "title_ar": "سنن المهتدين في مقامات الدين",
+      "title_en": "Sunan al-Muhtadin fi Maqamat al-Din",
+      "author": "Imam Abu Abd Allah al-Mawwaq al-Gharnati (d. 897 AH)",
+      "file_path": "data/texts/heritage/sunan_al_muhtadin.txt"
+    },
+    {
+      "slug": "takhmis_al_ghanima",
+      "title_ar": "تخميس الغنيمة",
+      "title_en": "Takhmis al-Ghanima",
+      "author": "Classical Heritage Scholars",
+      "file_path": "data/texts/heritage/takhmis_al_ghanima.txt"
+    },
+    {
+      "slug": "al_futuhat_al_makkiyya",
+      "title_ar": "الفتوحات المكية في معرفة الأسرار المالكية والملكية",
+      "title_en": "Al-Futuhat al-Makkiyya (The Meccan Revelations)",
+      "author": "Shaykh al-Akbar Ibn 'Arabi (d. 638 AH)",
+      "file_path": "data/texts/heritage/al_futuhat_al_makkiyya.txt"
+    }
+  ]
+}

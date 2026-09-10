@@ -41,7 +41,7 @@ class LexicographicalTranslationEngine:
 
         self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY", "")
         self.base_url = (base_url or os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")).rstrip('/')
-        self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+        self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-flash")
         self.max_chunk_chars = max_chunk_chars
         self.engine_mode = engine_mode
         self.target_lang = target_lang
@@ -205,10 +205,19 @@ class LexicographicalTranslationEngine:
         return [r for s, r in scored[:max_candidates]]
 
     def lookup_ayn(self, root):
-        """Lookup archaic phonetic etymology in Al-Khalil's Kitab al-Ayn."""
+        """Lookup archaic phonetic etymology in Al-Khalil's Kitab al-Ayn with fast caching."""
+        if not hasattr(self, '_ayn_cache'):
+            self._ayn_cache = {}
+            
         n_root = self.normalize_root(root)
+        if n_root in self._ayn_cache:
+            return self._ayn_cache[n_root]
+            
         if n_root in self.ayn_dict:
-            return str(self.ayn_dict[n_root])[:300]
+            res = str(self.ayn_dict[n_root])[:300]
+            self._ayn_cache[n_root] = res
+            return res
+            
         patterns = [f"{n_root}:", f"({n_root})", f"{n_root} "]
         for k, v in self.ayn_dict.items():
             if not isinstance(v, str):
@@ -216,7 +225,11 @@ class LexicographicalTranslationEngine:
             for pat in patterns:
                 if pat in v:
                     idx = v.find(pat)
-                    return f"[{k}] " + v[idx:idx+300].replace('\n', ' ')
+                    res = f"[{k}] " + v[idx:idx+300].replace('\n', ' ')
+                    self._ayn_cache[n_root] = res
+                    return res
+                    
+        self._ayn_cache[n_root] = None
         return None
 
     def match_sibawayh_rule(self, arabic_text):
