@@ -31,7 +31,7 @@ def run_cmd(cmd, cwd=None):
 
 def sync_to_wyresup():
     print("🔄 [Distribution] Syncing EPUBs to WyreSup...")
-    for author in ["nawawi", "ghazali"]:
+    for author in ["nawawi", "ghazali", "raghib", "heritage", "mawwaq"]:
         src = BASE_DIR / f"data/epubs/{author}"
         if src.exists() and WYRESUP_EPUBS.exists():
             for ep in src.glob("*.epub"):
@@ -44,7 +44,7 @@ def sync_to_wyresup():
 
 def sync_to_google_drive():
     print("☁️ [Distribution] Syncing to Google Drive...")
-    for author in ["nawawi", "ghazali"]:
+    for author in ["nawawi", "ghazali", "raghib", "heritage", "mawwaq"]:
         ep_dir = BASE_DIR / f"data/epubs/{author}"
         tr_dir = BASE_DIR / f"data/translations/{author}"
         if ep_dir.exists():
@@ -89,6 +89,10 @@ const ghazaliPrefixes = [
   'mihakk_', 'minhaj_al_abidin_', 'mishkat_', 'miyar_', 'mizan_',
   'qawaid_', 'shifa_', 'sirr_', 'tahafut_'
 ];
+const raghibPrefixes = [
+  'adab_ikhtilat_', 'al_dhariah_', 'al_mufradat_', 'jami_al_tafsir_',
+  'muhadarat_al_udaba_', 'tafsil_al_nashatayn_'
+];
 
 let blockHeight = 700;
 const manifestBooks = [];
@@ -103,18 +107,38 @@ epubs.forEach((file, idx) => {
   let category = 'Sacred Sciences & Classical Heritage';
   let channelId = 'chan-general';
 
-  if (file.startsWith('tafsir_kabir_') || file.startsWith('al_matalib_') || file.startsWith('asas_') || file.startsWith('lawami_') || file.startsWith('ismat_') || file.startsWith('macalim_') || file.startsWith('asrar_') || file.startsWith('al_qada_') || file.startsWith('qada_') || file.startsWith('itiqadat_') || file.startsWith('al_mahsul_')) {
+  if (file.startsWith('tafsir_kabir_') || file.startsWith('al_matalib_') || file.startsWith('asas_') || file.startsWith('lawami_') || file.startsWith('ismat_') || file.startsWith('macalim_') || file.startsWith('asrar_') || file.startsWith('al_qada_') || file.startsWith('qada_') || file.startsWith('itiqadat_') || file.startsWith('al_mahsul_') || file.startsWith('arbain_fi_usul_')) {
     author = 'Imam Fakhr al-Din al-Razi (الإمام فخر الدين الرازي 544–606 AH)';
     category = 'Tafsir, Philosophical Kalam & Usul al-Fiqh';
     channelId = 'chan-imam-razi';
+  } else if (file.startsWith('ihya_')) {
+    author = 'Hujjat al-Islam Imam Abu Hamid al-Ghazali (حجة الإسلام أبو حامد الغزالي 450–505 AH)';
+    category = 'Ihya, Suluk & Spiritual Ethics (الإحياء والتصوف)';
+    channelId = 'chan-imam-abuhamid';
   } else if (ghazaliPrefixes.some(p => file.startsWith(p))) {
-    author = 'Imam Abu Hamid al-Ghazali (حجة الإسلام أبو حامد الغزالي 450–505 AH)';
-    category = 'Ihya, Tasawwuf, Ethics & Epistemology';
-    channelId = 'chan-imam-abuhamidd';
+    author = 'Hujjat al-Islam Imam Abu Hamid al-Ghazali (حجة الإسلام أبو حامد الغزالي 450–505 AH)';
+    category = 'Theology, Usul & Ethics (الكلام والأصول)';
+    channelId = 'chan-imam-abuhamid';
   } else if (nawawiPrefixes.some(p => file.startsWith(p))) {
     author = 'Imam Yahya ibn Sharaf al-Nawawi (الإمام يحيى بن شرف النووي 631–676 AH)';
-    category = 'Hadith, Adhkar, Quranic Etiquette & Fiqh';
+    category = 'Hadith, Adhkar & Shafi\'i Fiqh (الحديث والفقه)';
     channelId = 'chan-imam-nawawi';
+  } else if (raghibPrefixes.some(p => file.startsWith(p))) {
+    author = 'Imam al-Raghib al-Isfahani (الإمام الراغب الأصفهاني d. 502 AH)';
+    category = 'Quranic Lexicography & Adab (مفردات القرآن والأدب)';
+    channelId = 'chan-imam-raghib';
+  } else if (file.startsWith('al_shifa_')) {
+    author = 'Qadi Iyad al-Yahsubi (القاضي عياض 476–544 AH)';
+    category = 'Prophetic Biography & Shama\'il (السيرة والشمائل)';
+    channelId = 'chan-classical-heritage';
+  } else if (file.startsWith('al_futuhat_')) {
+    author = 'Shaykh al-Akbar Ibn Arabi (الشيخ الأكبر ابن عربي 560–638 AH)';
+    category = 'Irfan & Metaphysics (العرفان والتصوف)';
+    channelId = 'chan-classical-heritage';
+  } else if (file.startsWith('sunan_al_muhtadin') || file.startsWith('sanan') || file.startsWith('senan')) {
+    author = 'Imam Abu Abd Allah al-Mawwaq (الإمام المواق 797–897 AH)';
+    category = 'Spiritual Conduct & Fiqh (السلوك والفقه)';
+    channelId = 'chan-classical-heritage';
   }
 
   const txHash = '0x' + crypto.createHash('sha256').update(hash + idx + 'wyrenet').digest('hex');

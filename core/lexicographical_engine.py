@@ -41,6 +41,8 @@ class LexicographicalTranslationEngine:
 
         self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY", "")
         self.base_url = (base_url or os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")).rstrip('/')
+        if self.base_url.endswith("/chat/completions"):
+            self.base_url = self.base_url[:-len("/chat/completions")].rstrip('/')
         self.model = model or os.getenv("DEEPSEEK_MODEL", "deepseek-flash")
         self.max_chunk_chars = max_chunk_chars
         self.engine_mode = engine_mode
